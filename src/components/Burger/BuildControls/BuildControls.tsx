@@ -11,10 +11,16 @@ const controls = [
 ];
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const buildControls = (_props: any) => (
+const buildControls = (props: any) => (
   <div className={classes.BuildControls}>
     {controls.map((control) => (
-      <BuildControl key={control.label} label={control.label} />
+      <BuildControl
+        key={control.label}
+        label={control.label}
+        added={() => props.ingredientAdded(control.type)}
+        removed={() => props.ingredientRemoved(control.type)}
+        disabled={props.disabled[control.type]}
+      />
     ))}
   </div>
 );
