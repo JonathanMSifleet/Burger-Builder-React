@@ -19,8 +19,26 @@ class BurgerBuilder extends Component {
       cheese: 0,
       meat: 0
     },
-    totalPrice: 4
+    totalPrice: 4,
+    purchasable: false
   };
+
+  updatePurchaseState(ingredients: {
+    salad?: number;
+    bacon?: number;
+    cheese?: number;
+    meat?: number;
+  }): void {
+    const sum = Object.keys(ingredients)
+      .map((ingredientKey) => {
+        // @ts-ignore
+        return ingredients[ingredientKey];
+      })
+      .reduce((sum, el) => {
+        return sum + el;
+      }, 0);
+    this.setState({ purchasable: sum > 0 });
+  }
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   addIngredientHandler = (type: any): void => {
@@ -34,6 +52,7 @@ class BurgerBuilder extends Component {
     updatedIngredients[type] = count;
     const newPrice = this.state.totalPrice + INGREDIENT_PRICES[type];
     this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
+    this.updatePurchaseState(updatedIngredients);
   };
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -51,6 +70,7 @@ class BurgerBuilder extends Component {
     updatedIngredients[type] = count;
     const newPrice = this.state.totalPrice - INGREDIENT_PRICES[type];
     this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
+    this.updatePurchaseState(updatedIngredients);
   };
 
   render(): JSX.Element {
@@ -69,6 +89,8 @@ class BurgerBuilder extends Component {
           ingredientAdded={this.addIngredientHandler}
           ingredientRemoved={this.removeIngredient}
           disabled={disabledInfo}
+          price={this.state.totalPrice}
+          purchasable={this.state.purchasable}
         />
       </Auxiliary>
     );

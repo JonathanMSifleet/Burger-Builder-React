@@ -13,6 +13,9 @@ const controls = [
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const buildControls = (props: any) => (
   <div className={classes.BuildControls}>
+    <p>
+      Current Price: <strong>{props.price.toFixed(2)}</strong>
+    </p>
     {controls.map((control) => (
       <BuildControl
         key={control.label}
@@ -22,6 +25,9 @@ const buildControls = (props: any) => (
         disabled={props.disabled[control.type]}
       />
     ))}
+    <button className={classes.OrderButton} disabled={!props.purchasable}>
+      <strong>Order now</strong>
+    </button>
   </div>
 );
 
