@@ -1,8 +1,17 @@
 // @ts-expect-error false-error
-import React from 'react';
+import React, { Component } from 'react';
+import Layout from './components/Layout/Layout';
 
-function App(): JSX.Element {
-  return <div></div>;
+class App extends Component {
+  render(): JSX.Element {
+    return (
+      <div>
+        <Layout>
+          <p>test</p>
+        </Layout>
+      </div>
+    );
+  }
 }
 
 export default App;
