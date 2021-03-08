@@ -1,6 +1,7 @@
 // @ts-ignore
 import React from 'react';
 import Auxiliary from '../../../hoc/Auxiliary';
+import Button from '../../UI/Button/Button';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const orderSummary = (props: any): JSX.Element => {
@@ -20,7 +21,16 @@ const orderSummary = (props: any): JSX.Element => {
       <h3>Your Order</h3>
       <p>A delicious burger with the following ingredients:</p>
       <ul>{ingredientSummary}</ul>
+      <p>
+        <strong>Total price: {props.price}</strong>
+      </p>
       <p>Continue to checkout?</p>
+      <Button buttonType="Danger" clicked={props.purchaseCancelled}>
+        Cancel
+      </Button>
+      <Button buttonType="Success" clicked={props.purchaseContinued}>
+        Continue
+      </Button>
     </Auxiliary>
   );
 };

@@ -5,7 +5,7 @@ import classes from './Burger.module.css';
 import BurgerIngredient from './BurgerIngredient/BurgerIngredient';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const burger = (props: any) => {
+const burger = (props: any): JSX.Element => {
   // convert object to array of keys
   let transformedIngredients: any = Object.keys(props.ingredients)
     .map((ingredientKey) => {
