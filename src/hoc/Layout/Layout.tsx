@@ -1,15 +1,10 @@
 // @ts-ignore false-error
 import React, { Component } from 'react';
-import Auxiliary from '../../hoc/Auxiliary';
-import SideDrawer from '../Navigation/SideDrawer/SideDrawer';
-import Toolbar from '../Navigation/Toolbar/Toolbar';
+import SideDrawer from '../../components/Navigation/SideDrawer/SideDrawer';
+import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
+import Auxiliary from '../Auxiliary/Auxiliary';
 import classes from './Layout.module.css';
 
-type Props = {
-  children: any;
-};
-
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 class Layout extends Component<Props> {
   state = {
     showSideDrawer: false
@@ -25,6 +20,7 @@ class Layout extends Component<Props> {
       return { showSideDrawer: !prevState.showSideDrawer };
     });
   };
+
   render(): JSX.Element {
     return (
       <Auxiliary>
@@ -38,5 +34,9 @@ class Layout extends Component<Props> {
     );
   }
 }
+
+type Props = {
+  children: any;
+};
 
 export default Layout;

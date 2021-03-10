@@ -1,6 +1,6 @@
 // @ts-ignore
 import React, { Component } from 'react';
-import Auxiliary from '../../../hoc/Auxiliary';
+import Auxiliary from '../../../hoc/Auxiliary/Auxiliary';
 import Backdrop from '../Backdrop/Backdrop';
 import classes from './Modal.module.css';
 
