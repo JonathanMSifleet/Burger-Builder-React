@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Auxiliary from '../../../hoc/Auxiliary';
 import Button from '../../UI/Button/Button';
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+// could be a functional component
 class OrderSummary extends Component<Props> {
   componentDidUpdate(): void {
     console.log('[OrderSummary] WillUpdate');

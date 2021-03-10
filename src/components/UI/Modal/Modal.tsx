@@ -1,24 +1,39 @@
 // @ts-ignore
-import React from 'react';
-
-import classes from './Modal.module.css';
+import React, { Component } from 'react';
 import Auxiliary from '../../../hoc/Auxiliary';
 import Backdrop from '../Backdrop/Backdrop';
+import classes from './Modal.module.css';
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const modal = (props: any): JSX.Element => (
-  <Auxiliary>
-    <Backdrop show={props.show} clicked={props.modalClosed} />
-    <div
-      className={classes.Modal}
-      style={{
-        transform: props.show ? 'translateY(0)' : 'translateY(-100vh)',
-        opacity: props.show ? '1' : '0'
-      }}
-    >
-      {props.children}
-    </div>
-  </Auxiliary>
-);
+class Modal extends Component<Props> {
+  shouldComponentUpdate(nextProps: { show: boolean }): boolean {
+    return nextProps.show !== this.props.show;
+  }
 
-export default modal;
+  UNSAFE_componentWillUpdate(): void {
+    console.log('[Modal] Will update');
+  }
+
+  render(): JSX.Element {
+    return (
+      <Auxiliary>
+        <Backdrop show={this.props.show} clicked={this.props.modalClosed} />
+        <div
+          className={classes.Modal}
+          style={{
+            transform: this.props.show ? 'translateY(0)' : 'translateY(-100vh)',
+            opacity: this.props.show ? '1' : '0'
+          }}
+        >
+          {this.props.children}
+        </div>
+      </Auxiliary>
+    );
+  }
+}
+
+type Props = {
+  modalClosed(): void;
+  show: boolean;
+};
+
+export default Modal;

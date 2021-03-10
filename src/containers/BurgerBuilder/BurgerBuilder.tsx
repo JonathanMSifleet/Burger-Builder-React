@@ -1,10 +1,10 @@
 // @ts-expect-error
 import React, { Component } from 'react';
+import Auxiliary from '../../hoc/Auxiliary';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Burger from '../../components/Burger/Burger';
-import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Modal from '../../components/UI/Modal/Modal';
-import Auxiliary from '../../hoc/Auxiliary';
+import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 
 const INGREDIENT_PRICES: { [key: string]: number } = {
   bacon: 0.7,
