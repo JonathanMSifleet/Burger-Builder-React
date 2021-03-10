@@ -6,8 +6,7 @@ import Backdrop from '../../UI/Backdrop/Backdrop';
 import NavigationItems from '../NavigationItems/NavigationItems';
 import classes from './SideDrawer.module.css';
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const sideDrawer = (props: any): JSX.Element => {
+const sideDrawer = (props: Props): JSX.Element => {
   let attachedClasses = [classes.SideDrawer, classes.Close];
 
   if (props.open) attachedClasses = [classes.SideDrawer, classes.Open];
@@ -25,6 +24,11 @@ const sideDrawer = (props: any): JSX.Element => {
       </div>
     </Auxiliary>
   );
+};
+
+type Props = {
+  closed(): void;
+  open: boolean;
 };
 
 export default sideDrawer;

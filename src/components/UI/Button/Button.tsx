@@ -1,10 +1,8 @@
 // @ts-ignore
 import React from 'react';
-
 import classes from './Button.module.css';
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const button = (props: any): JSX.Element => (
+const button = (props: Props): JSX.Element => (
   <button
     className={[classes.Button, classes[props.buttonType]].join(' ')}
     onClick={props.clicked}
@@ -12,5 +10,11 @@ const button = (props: any): JSX.Element => (
     {props.children}
   </button>
 );
+
+type Props = {
+  buttonType: string;
+  clicked(): void;
+  children: any;
+};
 
 export default button;

@@ -5,8 +5,7 @@ import NavigationItems from '../NavigationItems/NavigationItems';
 import DrawerToggle from '../SideDrawer/DrawerToggle/DrawerToggle';
 import classes from './Toolbar.module.css';
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const toolbar = (props: any): JSX.Element => (
+const toolbar = (props: Props): JSX.Element => (
   <header className={classes.Toolbar}>
     <DrawerToggle clicked={props.drawerToggleClicked} />
     <div className={classes.Logo}>
@@ -17,5 +16,9 @@ const toolbar = (props: any): JSX.Element => (
     </nav>
   </header>
 );
+
+type Props = {
+  drawerToggleClicked(): void;
+};
 
 export default toolbar;

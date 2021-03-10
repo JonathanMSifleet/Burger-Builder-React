@@ -1,38 +1,53 @@
 // @ts-ignore
-import React from 'react';
+import React, { Component } from 'react';
 import Auxiliary from '../../../hoc/Auxiliary';
 import Button from '../../UI/Button/Button';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const orderSummary = (props: any): JSX.Element => {
-  const ingredientSummary = Object.keys(props.ingredients).map(
-    (ingredientKey) => {
-      return (
-        <li key={ingredientKey}>
-          <span style={{ textTransform: 'capitalize' }}>{ingredientKey}</span>:{' '}
-          {props.ingredients[ingredientKey]}
-        </li>
-      );
-    }
-  );
-  <li>Salad: 1</li>;
-  return (
-    <Auxiliary>
-      <h3>Your Order</h3>
-      <p>A delicious burger with the following ingredients:</p>
-      <ul>{ingredientSummary}</ul>
-      <p>
-        <strong>Total price: {props.price}</strong>
-      </p>
-      <p>Continue to checkout?</p>
-      <Button buttonType="Danger" clicked={props.purchaseCancelled}>
-        Cancel
-      </Button>
-      <Button buttonType="Success" clicked={props.purchaseContinued}>
-        Continue
-      </Button>
-    </Auxiliary>
-  );
+class OrderSummary extends Component<Props> {
+  componentDidUpdate(): void {
+    console.log('[OrderSummary] WillUpdate');
+  }
+
+  render(): JSX.Element {
+    const ingredientSummary = Object.keys(this.props.ingredients).map(
+      (ingredientKey) => {
+        return (
+          <li key={ingredientKey}>
+            <span style={{ textTransform: 'capitalize' }}>{ingredientKey}</span>
+            : {this.props.ingredients[ingredientKey]}
+          </li>
+        );
+      }
+    );
+
+    return (
+      <Auxiliary>
+        <h3>Your Order</h3>
+        <p>A delicious burger with the following ingredients:</p>
+        <ul>{ingredientSummary}</ul>
+        <p>
+          <strong>Total price: {this.props.price}</strong>
+        </p>
+        <p>Continue to checkout?</p>
+        <Button buttonType="Danger" clicked={this.props.purchaseCancelled}>
+          Cancel
+        </Button>
+        <Button buttonType="Success" clicked={this.props.purchaseContinued}>
+          Continue
+        </Button>
+      </Auxiliary>
+    );
+  }
+}
+
+type Props = {
+  ingredients: {
+    [type: string]: number;
+  };
+  price: string;
+  purchaseCancelled(): void;
+  purchaseContinued(): void;
 };
 
-export default orderSummary;
+export default OrderSummary;

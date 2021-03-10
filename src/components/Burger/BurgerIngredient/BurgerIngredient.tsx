@@ -1,14 +1,12 @@
 // @ts-ignore
 import React, { Component } from 'react';
-
 import classes from './BurgerIngredient.module.css';
 
-interface IProps {
+type Props = {
   type: string;
-}
+};
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-class BurgerIngredient extends Component<IProps> {
+class BurgerIngredient extends Component<Props> {
   render(): JSX.Element {
     let ingredient: any;
 

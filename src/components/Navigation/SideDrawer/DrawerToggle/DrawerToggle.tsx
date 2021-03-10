@@ -1,8 +1,17 @@
 // @ts-ignore
 import React from 'react';
+import classes from './DrawerToggle.module.css';
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const drawerToggle = (props: any): JSX.Element => (
-  <div onClick={props.clicked}>Menu</div>
+const drawerToggle = (props: Props): JSX.Element => (
+  <div className={classes.DrawerToggle} onClick={props.clicked}>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
 );
+
+type Props = {
+  clicked(): void;
+};
+
 export default drawerToggle;

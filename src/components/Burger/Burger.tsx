@@ -1,13 +1,13 @@
 // @ts-ignore
 import React from 'react';
 import classes from './Burger.module.css';
-
 import BurgerIngredient from './BurgerIngredient/BurgerIngredient';
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const burger = (props: any): JSX.Element => {
+const burger = (props: Props): JSX.Element => {
   // convert object to array of keys
-  let transformedIngredients: any = Object.keys(props.ingredients)
+  let transformedIngredients: JSX.Element[] | JSX.Element = Object.keys(
+    props.ingredients
+  )
     .map((ingredientKey) => {
       return [...Array(props.ingredients[ingredientKey])].map((_, i) => {
         return (
@@ -31,6 +31,10 @@ const burger = (props: any): JSX.Element => {
       <BurgerIngredient type="bread-bottom" />
     </div>
   );
+};
+
+type Props = {
+  ingredients: { [type: string]: number };
 };
 
 export default burger;

@@ -1,17 +1,16 @@
 // @ts-ignore
 import React from 'react';
-import classes from './BuildControls.module.css';
 import BuildControl from './BuildControl/BuildControl';
+import classes from './BuildControls.module.css';
 
 const controls = [
-  { label: 'Salad', type: 'salad' },
   { label: 'Bacon', type: 'bacon' },
   { label: 'Cheese', type: 'cheese' },
-  { label: 'Meat', type: 'meat' }
+  { label: 'Meat', type: 'meat' },
+  { label: 'Salad', type: 'salad' }
 ];
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const buildControls = (props: any): JSX.Element => {
+const buildControls = (props: Props): JSX.Element => {
   return (
     <div className={classes.BuildControls}>
       <p>
@@ -19,11 +18,11 @@ const buildControls = (props: any): JSX.Element => {
       </p>
       {controls.map((control) => (
         <BuildControl
+          added={() => props.ingredientAdded(control.type)}
+          disabled={props.disabled[control.type]}
           key={control.label}
           label={control.label}
-          added={() => props.ingredientAdded(control.type)}
           removed={() => props.ingredientRemoved(control.type)}
-          disabled={props.disabled[control.type]}
         />
       ))}
       <button
@@ -35,6 +34,15 @@ const buildControls = (props: any): JSX.Element => {
       </button>
     </div>
   );
+};
+
+type Props = {
+  ingredientAdded(type: string): void;
+  ingredientRemoved(type: string): void;
+  price: number;
+  purchasable: boolean;
+  disabled: { [type: string]: any };
+  ordered(): void;
 };
 
 export default buildControls;

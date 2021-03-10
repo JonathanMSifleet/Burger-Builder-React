@@ -1,4 +1,7 @@
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const auxiliary = (props: any): any => props.children;
+const auxiliary = (props: Props): any => props.children;
+
+type Props = {
+  children: any;
+};
 
 export default auxiliary;

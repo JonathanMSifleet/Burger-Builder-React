@@ -1,36 +1,36 @@
 // @ts-expect-error
 import React, { Component } from 'react';
-import Auxiliary from '../../hoc/Auxiliary';
-import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
-import Modal from '../../components/UI/Modal/Modal';
+import Burger from '../../components/Burger/Burger';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
+import Modal from '../../components/UI/Modal/Modal';
+import Auxiliary from '../../hoc/Auxiliary';
 
 const INGREDIENT_PRICES: { [key: string]: number } = {
-  salad: 0.5,
+  bacon: 0.7,
   cheese: 0.4,
   meat: 1.3,
-  bacon: 0.7
+  salad: 0.5
 };
 
 class BurgerBuilder extends Component {
   state = {
     ingredients: {
-      salad: 0,
       bacon: 0,
       cheese: 0,
-      meat: 0
+      meat: 0,
+      salad: 0
     },
-    totalPrice: 4,
     purchasable: false,
-    purchasing: false
+    purchasing: false,
+    totalPrice: 4
   };
 
   updatePurchaseState(ingredients: {
-    salad?: number;
     bacon?: number;
     cheese?: number;
     meat?: number;
+    salad?: number;
   }): void {
     const sum = Object.keys(ingredients)
       .map((ingredientKey) => {
@@ -43,8 +43,7 @@ class BurgerBuilder extends Component {
     this.setState({ purchasable: sum > 0 });
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  addIngredientHandler = (type: any): void => {
+  addIngredientHandler = (type: string): void => {
     // @ts-ignore
     let count = this.state.ingredients[type];
     count++;
@@ -58,8 +57,7 @@ class BurgerBuilder extends Component {
     this.updatePurchaseState(updatedIngredients);
   };
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  removeIngredient = (type: any): void => {
+  removeIngredient = (type: string): void => {
     // @ts-ignore
     let count = this.state.ingredients[type];
     if (count <= 0) {
@@ -100,8 +98,8 @@ class BurgerBuilder extends Component {
     return (
       <Auxiliary>
         <Modal
-          show={this.state.purchasing}
           modalClosed={this.purchaseCancelHandler}
+          show={this.state.purchasing}
         >
           <OrderSummary
             ingredients={this.state.ingredients}
@@ -112,9 +110,9 @@ class BurgerBuilder extends Component {
         </Modal>
         <Burger ingredients={this.state.ingredients} />
         <BuildControls
+          disabled={disabledInfo}
           ingredientAdded={this.addIngredientHandler}
           ingredientRemoved={this.removeIngredient}
-          disabled={disabledInfo}
           ordered={this.purchaseHandler}
           price={this.state.totalPrice}
           purchasable={this.state.purchasable}
