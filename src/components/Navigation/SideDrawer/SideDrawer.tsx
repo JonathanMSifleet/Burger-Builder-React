@@ -1,20 +1,29 @@
 // @ts-ignore
 import React from 'react';
+import Auxiliary from '../../../hoc/Auxiliary';
 import Logo from '../../Logo/Logo';
+import Backdrop from '../../UI/Backdrop/Backdrop';
 import NavigationItems from '../NavigationItems/NavigationItems';
 import classes from './SideDrawer.module.css';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const sideDrawer = (_props: any): JSX.Element => {
+const sideDrawer = (props: any): JSX.Element => {
+  let attachedClasses = [classes.SideDrawer, classes.Close];
+
+  if (props.open) attachedClasses = [classes.SideDrawer, classes.Open];
+
   return (
-    <div className={classes.SideDrawer}>
-      <div className={classes.Logo}>
-        <Logo />
+    <Auxiliary>
+      <Backdrop show={props.open} clicked={props.closed} />
+      <div className={attachedClasses.join(' ')}>
+        <div className={classes.Logo}>
+          <Logo />
+        </div>
+        <nav>
+          <NavigationItems />
+        </nav>
       </div>
-      <nav>
-        <NavigationItems />
-      </nav>
-    </div>
+    </Auxiliary>
   );
 };
 
