@@ -36,7 +36,8 @@ class Modal extends Component<Props> {
 
 type Props = {
   children: any;
-  modalClosed(): void;
+  clicked?(): void;
+  modalClosed?: () => any;
   show: boolean;
 };
 
