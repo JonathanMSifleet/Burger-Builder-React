@@ -5,8 +5,11 @@ import Backdrop from '../Backdrop/Backdrop';
 import classes from './Modal.module.css';
 
 class Modal extends Component<Props> {
-  shouldComponentUpdate(nextProps: { show: boolean }): boolean {
-    return nextProps.show !== this.props.show;
+  shouldComponentUpdate(nextProps: Props): boolean {
+    return (
+      nextProps.show !== this.props.show ||
+      nextProps.children !== this.props.children
+    );
   }
 
   UNSAFE_componentWillUpdate(): void {
@@ -32,6 +35,7 @@ class Modal extends Component<Props> {
 }
 
 type Props = {
+  children: any;
   modalClosed(): void;
   show: boolean;
 };
