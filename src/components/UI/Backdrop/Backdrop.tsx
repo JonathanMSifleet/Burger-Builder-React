@@ -8,7 +8,7 @@ const backdrop = (props: Props): JSX.Element | null =>
   ) : null;
 
 type Props = {
-  clicked(): void;
+  clicked?(): void;
   show: boolean;
 };
 
