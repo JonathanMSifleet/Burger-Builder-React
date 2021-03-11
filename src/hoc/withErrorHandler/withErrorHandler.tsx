@@ -8,14 +8,14 @@ const withErrorHandler = (
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   WrappedComponent: any,
   axios: AxiosInstance
-): unknown => {
+): any => {
   // eslint-disable-next-line react/display-name
   return class extends Component {
     state = {
       error: null as any
     };
 
-    componentDidMount() {
+    UNSAFE_componentWillMount() {
       axios.interceptors.request.use((req: any) => {
         this.setState({ error: null });
         return req;
