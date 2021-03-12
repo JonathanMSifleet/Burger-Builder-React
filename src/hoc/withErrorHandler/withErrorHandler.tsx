@@ -14,18 +14,25 @@ const withErrorHandler = (
     state = {
       error: null as any
     };
+    resInterceptor: any;
+    reqInterceptor: any;
 
     UNSAFE_componentWillMount() {
-      axios.interceptors.request.use((req: any) => {
+      this.reqInterceptor = axios.interceptors.request.use((req: any) => {
         this.setState({ error: null });
         return req;
       });
-      axios.interceptors.response.use(
+      this.resInterceptor = axios.interceptors.response.use(
         (res: any) => res,
         (error: any) => {
           this.setState({ error });
         }
       );
+    }
+
+    componentWillUnmount() {
+      axios.interceptors.request.eject(this.reqInterceptor);
+      axios.interceptors.response.eject(this.resInterceptor);
     }
 
     errorConfirmedHandler = () => {

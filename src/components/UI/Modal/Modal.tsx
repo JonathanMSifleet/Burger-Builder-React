@@ -12,10 +12,6 @@ class Modal extends Component<Props> {
     );
   }
 
-  UNSAFE_componentWillUpdate(): void {
-    console.log('[Modal] Will update');
-  }
-
   render(): JSX.Element {
     return (
       <Auxiliary>
