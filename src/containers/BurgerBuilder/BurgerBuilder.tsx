@@ -89,24 +89,6 @@ class BurgerBuilder extends Component<IProps> {
   };
 
   purchaseContinueHandler = async (): Promise<void> => {
-    // this.setState({ loading: true });
-    // // .json required for Firebase
-    // // best to calculate the price on the server
-    // const order = {
-    //   customer: {
-    //     address: {
-    //       postCode: 'qwerty',
-    //       street: 'Test',
-    //       country: 'UK'
-    //     },
-    //     email: 'test@gmail.com',
-    //     name: 'Jon'
-    //   },
-    //   ingredients: this.state.ingredients,
-    //   price: this.state.totalPrice
-    // };
-    // await axios.post('/orders.json', order);
-    // this.setState({ loading: false, purchasing: false });
     const queryParams = [];
     for (const i in this.state.ingredients) {
       queryParams.push(
@@ -116,6 +98,8 @@ class BurgerBuilder extends Component<IProps> {
           encodeURIComponent(this.state.ingredients[i])
       );
     }
+
+    queryParams.push('price=' + this.state.totalPrice);
     const queryString = queryParams.join('&');
     this.props.history.push({
       pathname: '/checkout',
