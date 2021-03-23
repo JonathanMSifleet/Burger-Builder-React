@@ -1,6 +1,8 @@
 // @ts-ignore
 import React, { Component } from 'react';
+import { Route } from 'react-router-dom';
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
+import ContactData from './ContactData/ContactData';
 
 class Checkout extends Component<IProps> {
   state = {
@@ -39,6 +41,10 @@ class Checkout extends Component<IProps> {
           onCheckoutCancelled={this.checkoutCancelledHandler}
           onCheckoutContinued={this.checkoutContinuedHandler}
         />
+        <Route
+          path={this.props.match.url + '/contact-data'}
+          component={ContactData}
+        />
       </div>
     );
   }
@@ -47,6 +53,7 @@ class Checkout extends Component<IProps> {
 interface IProps {
   history: any;
   location: any;
+  match: any;
 }
 
 export default Checkout;
