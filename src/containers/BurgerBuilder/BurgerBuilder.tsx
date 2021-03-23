@@ -16,7 +16,7 @@ const INGREDIENT_PRICES: { [key: string]: number } = {
   salad: 0.5
 };
 
-class BurgerBuilder extends Component {
+class BurgerBuilder extends Component<IProps> {
   state = {
     error: null as any,
     ingredients: {},
@@ -89,25 +89,38 @@ class BurgerBuilder extends Component {
   };
 
   purchaseContinueHandler = async (): Promise<void> => {
-    this.setState({ loading: true });
-    // .json required for Firebase
-    // best to calculate the price on the server
-    const order = {
-      customer: {
-        address: {
-          postCode: 'qwerty',
-          street: 'Test',
-          country: 'UK'
-        },
-        email: 'test@gmail.com',
-        name: 'Jon'
-      },
-      ingredients: this.state.ingredients,
-      price: this.state.totalPrice
-    };
-
-    await axios.post('/orders.json', order);
-    this.setState({ loading: false, purchasing: false });
+    // this.setState({ loading: true });
+    // // .json required for Firebase
+    // // best to calculate the price on the server
+    // const order = {
+    //   customer: {
+    //     address: {
+    //       postCode: 'qwerty',
+    //       street: 'Test',
+    //       country: 'UK'
+    //     },
+    //     email: 'test@gmail.com',
+    //     name: 'Jon'
+    //   },
+    //   ingredients: this.state.ingredients,
+    //   price: this.state.totalPrice
+    // };
+    // await axios.post('/orders.json', order);
+    // this.setState({ loading: false, purchasing: false });
+    const queryParams = [];
+    for (const i in this.state.ingredients) {
+      queryParams.push(
+        encodeURIComponent(i) +
+          '=' +
+          // @ts-ignore
+          encodeURIComponent(this.state.ingredients[i])
+      );
+    }
+    const queryString = queryParams.join('&');
+    this.props.history.push({
+      pathname: '/checkout',
+      search: '?' + queryString
+    });
   };
 
   render(): JSX.Element {
@@ -172,5 +185,9 @@ type ingredients = {
   meat?: number;
   salad?: number;
 };
+
+interface IProps {
+  history: any;
+}
 
 export default withErrorHandler(BurgerBuilder, axios);

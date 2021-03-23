@@ -11,12 +11,10 @@ const checkoutSummary = (props: Props): JSX.Element => {
       <div className={classes.Box}>
         <Burger ingredients={props.ingredients} />
       </div>
-      {/* @ts-ignore */}
-      <Button buttonType="Danger" clicked>
+      <Button buttonType="Danger" clicked={props.onCheckoutCancelled}>
         Cancel
       </Button>
-      {/* @ts-ignore */}
-      <Button buttonType="Success" clicked>
+      <Button buttonType="Success" clicked={props.onCheckoutContinued}>
         Continue
       </Button>
     </div>
@@ -25,6 +23,8 @@ const checkoutSummary = (props: Props): JSX.Element => {
 
 type Props = {
   ingredients: { [type: string]: number };
+  onCheckoutCancelled(): void;
+  onCheckoutContinued(): void;
 };
 
 export default checkoutSummary;
