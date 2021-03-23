@@ -1,6 +1,6 @@
-import axios from 'axios';
 // @ts-ignore
 import React, { Component } from 'react';
+import axios from '../../../axios-orders';
 import Button from '../../../components/UI/Button/Button';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import classes from './ContactData.module.css';
@@ -35,10 +35,7 @@ class ContactData extends Component<IProps> {
       ingredients: this.props.ingredients,
       price: this.props.price
     };
-    await axios.post(
-      'https://react-project-776bc-default-rtdb.europe-west1.firebasedatabase.app/orders.json',
-      order
-    );
+    await axios.post('orders.json', order);
     this.setState({ loading: false });
     this.props.history.push('/');
   };
