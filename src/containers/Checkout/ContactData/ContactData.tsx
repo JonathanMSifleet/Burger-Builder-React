@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import axios from '../../../axios-orders';
 import Button from '../../../components/UI/Button/Button';
+import Input from '../../../components/UI/Input/Input';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import classes from './ContactData.module.css';
 
@@ -16,8 +17,8 @@ class ContactData extends Component<IProps> {
     name: ''
   };
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  orderHandler = async (event: any) => {
+  orderHandler = async (event: Event | undefined): Promise<void> => {
+    // @ts-ignore
     event.preventDefault();
     this.setState({ loading: true });
     // .json required for Firebase
@@ -43,26 +44,26 @@ class ContactData extends Component<IProps> {
   render(): JSX.Element {
     let form = (
       <form>
-        <input
-          className={classes.Input}
+        <Input
+          inputtype="input"
           name="name"
           placeholder="Your name"
           type="text"
         />
-        <input
-          className={classes.Input}
+        <Input
+          inputtype="input"
           name="email"
           placeholder="Your email"
           type="email"
         />
-        <input
-          className={classes.Input}
+        <Input
+          inputtype="input"
           name="street"
           placeholder="Your street"
           type="text"
         />
-        <input
-          className={classes.Input}
+        <Input
+          inputtype="input"
           name="postCode"
           placeholder="Your post-code"
           type="text"
