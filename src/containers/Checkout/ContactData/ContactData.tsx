@@ -81,14 +81,24 @@ class ContactData extends Component<IProps> {
     this.setState({ orderForm: updatedOrderForm });
   };
 
-  orderHandler = async (event: Event | undefined): Promise<void> => {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  orderHandler = async (event: any): Promise<void> => {
     // @ts-ignore
     event.preventDefault();
     this.setState({ loading: true });
-    // .json required for Firebase
+    const formData = {};
+
+    for (const formElementIdentifier in this.state.orderForm) {
+      // @ts-ignore
+      formData[formElementIdentifier] = this.state.orderForm[
+        formElementIdentifier
+      ].value;
+    }
+
     // best to calculate the price on the server
     const order = {
       ingredients: this.props.ingredients,
+      orderData: formData,
       price: this.props.price
     };
     await axios.post('orders.json', order);
@@ -106,7 +116,7 @@ class ContactData extends Component<IProps> {
       });
     }
     let form = (
-      <form>
+      <form onSubmit={this.orderHandler}>
         {formElementsArray.map((formElement) => {
           return (
             <Input
@@ -120,9 +130,7 @@ class ContactData extends Component<IProps> {
             />
           );
         })}
-        <Button buttonType="Success" clicked={() => this.orderHandler(event)}>
-          Order
-        </Button>
+        <Button buttonType="Success">Order</Button>
       </form>
     );
     if (this.state.loading) {

@@ -13,7 +13,7 @@ const button = (props: Props): JSX.Element => (
 
 type Props = {
   buttonType: string;
-  clicked(): void;
+  clicked?(): void;
   children: any;
 };
 
