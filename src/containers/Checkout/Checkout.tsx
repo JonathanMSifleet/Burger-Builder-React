@@ -29,6 +29,9 @@ class Checkout extends Component<IProps> {
         ingredients[param[0]] = param[1];
       }
     }
+
+    console.log('Price:', price);
+
     this.setState({ ingredients, totalPrice: price });
   }
 

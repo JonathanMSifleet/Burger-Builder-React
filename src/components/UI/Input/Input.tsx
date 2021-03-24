@@ -5,33 +5,15 @@ import classes from './Input.module.css';
 const input = (props: props): JSX.Element => {
   let inputElement: JSX.Element;
 
-  switch (props.elementType) {
+  switch (props.inputtype) {
     case 'input':
-      inputElement = (
-        <input
-          className={classes.InputElement}
-          {...props.elementConfig}
-          value={props.value}
-        />
-      );
+      inputElement = <input {...props} />;
       break;
     case 'textarea':
-      inputElement = (
-        <textarea
-          className={classes.InputElement}
-          {...props.elementConfig}
-          value={props.value}
-        />
-      );
+      inputElement = <textarea {...props} />;
       break;
     default:
-      inputElement = (
-        <input
-          className={classes.InputElement}
-          {...props.elementConfig}
-          value={props.value}
-        />
-      );
+      inputElement = <input {...props} />;
   }
   return (
     <div className={classes.Input}>
@@ -42,14 +24,11 @@ const input = (props: props): JSX.Element => {
 };
 
 type props = {
-  elementConfig?: any;
-  elementType?: any;
-  inputtype?: string;
+  inputtype: string;
   label?: string;
-  name?: string;
-  placeholder?: string;
-  type?: string;
-  value?: string;
+  name: string;
+  placeholder: string;
+  type: string;
 };
 
 export default input;

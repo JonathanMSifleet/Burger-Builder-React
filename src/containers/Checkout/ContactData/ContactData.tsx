@@ -7,69 +7,32 @@ import Spinner from '../../../components/UI/Spinner/Spinner';
 import classes from './ContactData.module.css';
 
 class ContactData extends Component<IProps> {
-  // this should be generated dynamically:
   state = {
+    address: {
+      street: '',
+      postCode: ''
+    },
+    email: '',
     loading: false,
-    orderForm: {
-      name: {
-        elementType: 'input',
-        elementConfig: {
-          type: 'text',
-          placeholder: 'Your Name'
-        },
-        value: ''
-      },
-      email: {
-        elementType: 'input',
-        elementConfig: {
-          type: 'email',
-          placeholder: 'Your email address'
-        },
-        value: ''
-      },
-      street: {
-        elementType: 'input',
-        elementConfig: {
-          type: 'text',
-          placeholder: 'Address line 1'
-        },
-        value: ''
-      },
-      postCode: {
-        elementType: 'input',
-        elementConfig: {
-          type: 'text',
-          placeholder: 'Your post-code'
-        },
-        value: ''
-      },
-      country: {
-        elementType: 'input',
-        elementConfig: {
-          type: 'text',
-          placeholder: 'Country'
-        },
-        value: 'Jonathan'
-      },
-      deliveryMethod: {
-        elementType: 'select',
-        elementConfig: {
-          options: [
-            { value: 'fastest', displayValue: 'Fastest' },
-            { value: 'cheapest', displayValue: 'Cheapest' }
-          ]
-        },
-        value: ''
-      }
-    }
+    name: ''
   };
 
   orderHandler = async (event: Event | undefined): Promise<void> => {
     // @ts-ignore
     event.preventDefault();
     this.setState({ loading: true });
+    // .json required for Firebase
     // best to calculate the price on the server
     const order = {
+      customer: {
+        address: {
+          postCode: 'qwerty',
+          street: 'Test',
+          country: 'UK'
+        },
+        email: 'test@gmail.com',
+        name: 'Jon'
+      },
       ingredients: this.props.ingredients,
       price: this.props.price
     };
@@ -79,31 +42,32 @@ class ContactData extends Component<IProps> {
   };
 
   render(): JSX.Element {
-    const formElementsArray = [];
-
-    for (const key in this.state.orderForm) {
-      formElementsArray.push({
-        id: key,
-        // @ts-ignore
-        config: this.state.orderForm[key]
-      });
-    }
-
-    console.log(
-      '🚀 ~ file: ContactData.tsx ~ line 83 ~ ContactData ~ render ~ formElementsArray',
-      formElementsArray
-    );
-
     let form = (
       <form>
-        {formElementsArray.map((formElement) => {
-          <Input
-            key={formElement.id}
-            elementType={formElement.config.elementType}
-            elementConfig={formElement.config.config}
-            value={formElement.config.value}
-          />;
-        })}
+        <Input
+          inputtype="input"
+          name="name"
+          placeholder="Your name"
+          type="text"
+        />
+        <Input
+          inputtype="input"
+          name="email"
+          placeholder="Your email"
+          type="email"
+        />
+        <Input
+          inputtype="input"
+          name="street"
+          placeholder="Your street"
+          type="text"
+        />
+        <Input
+          inputtype="input"
+          name="postCode"
+          placeholder="Your post-code"
+          type="text"
+        />
         <Button buttonType="Success" clicked={() => this.orderHandler(event)}>
           Order
         </Button>
