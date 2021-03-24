@@ -63,6 +63,24 @@ class ContactData extends Component<IProps> {
     loading: false
   };
 
+  inputChangedHandler = (
+    event: { target: { value: string } },
+    inputIdentifier: string
+  ): void => {
+    const updatedOrderForm = {
+      ...this.state.orderForm
+    };
+    // required as spread does not deep-copy nested properties
+    const updatedFormElement = {
+      // @ts-ignore
+      ...updatedOrderForm[inputIdentifier]
+    };
+    updatedFormElement.value = event.target.value;
+    // @ts-ignore
+    updatedOrderForm[inputIdentifier] = updatedFormElement;
+    this.setState({ orderForm: updatedOrderForm });
+  };
+
   orderHandler = async (event: Event | undefined): Promise<void> => {
     // @ts-ignore
     event.preventDefault();
@@ -92,6 +110,9 @@ class ContactData extends Component<IProps> {
         {formElementsArray.map((formElement) => {
           return (
             <Input
+              onChange={(event) =>
+                this.inputChangedHandler(event, formElement.id)
+              }
               key={formElement.id}
               elementType={formElement.config.elementType}
               elementConfig={formElement.config.elementConfig}

@@ -10,8 +10,9 @@ const input = (props: props): JSX.Element => {
       inputElement = (
         <input
           className={classes.InputElement}
-          {...props.elementConfig}
+          onChange={props.onChange}
           value={props.value}
+          {...props.elementConfig}
         />
       );
       break;
@@ -19,17 +20,36 @@ const input = (props: props): JSX.Element => {
       inputElement = (
         <textarea
           className={classes.InputElement}
-          {...props.elementConfig}
+          onChange={props.onChange}
           value={props.value}
+          {...props.elementConfig}
         />
+      );
+      break;
+    case 'select':
+      inputElement = (
+        <select
+          className={classes.InputElement}
+          onChange={props.onChange}
+          value={props.value}
+        >
+          {props.elementConfig.options.map(
+            (option: { value: string; displayValue: string }) => (
+              <option key={option.value} value={option.value}>
+                {option.displayValue}
+              </option>
+            )
+          )}
+        </select>
       );
       break;
     default:
       inputElement = (
         <input
           className={classes.InputElement}
-          {...props.elementConfig}
+          onChange={props.onChange}
           value={props.value}
+          {...props.elementConfig}
         />
       );
   }
@@ -42,7 +62,12 @@ const input = (props: props): JSX.Element => {
 };
 
 type props = {
-  elementConfig: string;
+  onChange?(event: any): void;
+  elementConfig: {
+    options: any;
+    placeholder: string;
+    type: string;
+  };
   elementType: string;
   label?: string;
   value: string;
