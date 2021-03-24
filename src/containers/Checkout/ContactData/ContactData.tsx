@@ -8,13 +8,59 @@ import classes from './ContactData.module.css';
 
 class ContactData extends Component<IProps> {
   state = {
-    address: {
-      street: '',
-      postCode: ''
+    orderForm: {
+      name: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Your Name'
+        },
+        value: ''
+      },
+      email: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'email',
+          placeholder: 'Your email address'
+        },
+        value: ''
+      },
+      street: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Address line 1'
+        },
+        value: ''
+      },
+      postCode: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Your post-code'
+        },
+        value: ''
+      },
+      country: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Country'
+        },
+        value: ''
+      },
+      deliveryMethod: {
+        elementType: 'select',
+        elementConfig: {
+          options: [
+            { value: 'fastest', displayValue: 'Fastest' },
+            { value: 'cheapest', displayValue: 'Cheapest' }
+          ]
+        },
+        value: ''
+      }
     },
-    email: '',
-    loading: false,
-    name: ''
+    loading: false
   };
 
   orderHandler = async (event: Event | undefined): Promise<void> => {
@@ -24,15 +70,6 @@ class ContactData extends Component<IProps> {
     // .json required for Firebase
     // best to calculate the price on the server
     const order = {
-      customer: {
-        address: {
-          postCode: 'qwerty',
-          street: 'Test',
-          country: 'UK'
-        },
-        email: 'test@gmail.com',
-        name: 'Jon'
-      },
       ingredients: this.props.ingredients,
       price: this.props.price
     };
@@ -42,32 +79,26 @@ class ContactData extends Component<IProps> {
   };
 
   render(): JSX.Element {
+    const formElementsArray = [];
+    for (const key in this.state.orderForm) {
+      formElementsArray.push({
+        id: key,
+        // @ts-ignore
+        config: this.state.orderForm[key]
+      });
+    }
     let form = (
       <form>
-        <Input
-          inputtype="input"
-          name="name"
-          placeholder="Your name"
-          type="text"
-        />
-        <Input
-          inputtype="input"
-          name="email"
-          placeholder="Your email"
-          type="email"
-        />
-        <Input
-          inputtype="input"
-          name="street"
-          placeholder="Your street"
-          type="text"
-        />
-        <Input
-          inputtype="input"
-          name="postCode"
-          placeholder="Your post-code"
-          type="text"
-        />
+        {formElementsArray.map((formElement) => {
+          return (
+            <Input
+              key={formElement.id}
+              elementType={formElement.config.elementType}
+              elementConfig={formElement.config.elementConfig}
+              value={formElement.config.value}
+            />
+          );
+        })}
         <Button buttonType="Success" clicked={() => this.orderHandler(event)}>
           Order
         </Button>

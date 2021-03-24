@@ -30,8 +30,6 @@ class Checkout extends Component<IProps> {
       }
     }
 
-    console.log('Price:', price);
-
     this.setState({ ingredients, totalPrice: price });
   }
 
