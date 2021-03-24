@@ -15,7 +15,12 @@ class ContactData extends Component<IProps> {
           type: 'text',
           placeholder: 'Your Name'
         },
-        value: ''
+        touched: false,
+        value: '',
+        valid: false,
+        validation: {
+          required: true
+        }
       },
       email: {
         elementType: 'input',
@@ -23,7 +28,12 @@ class ContactData extends Component<IProps> {
           type: 'email',
           placeholder: 'Your email address'
         },
-        value: ''
+        touched: false,
+        value: '',
+        valid: false,
+        validation: {
+          required: true
+        }
       },
       street: {
         elementType: 'input',
@@ -31,7 +41,12 @@ class ContactData extends Component<IProps> {
           type: 'text',
           placeholder: 'Address line 1'
         },
-        value: ''
+        touched: false,
+        value: '',
+        valid: false,
+        validation: {
+          required: true
+        }
       },
       postCode: {
         elementType: 'input',
@@ -39,7 +54,14 @@ class ContactData extends Component<IProps> {
           type: 'text',
           placeholder: 'Your post-code'
         },
-        value: ''
+        touched: false,
+        value: '',
+        valid: false,
+        validation: {
+          minLength: 6,
+          maxLength: 8,
+          required: true
+        }
       },
       country: {
         elementType: 'input',
@@ -47,7 +69,12 @@ class ContactData extends Component<IProps> {
           type: 'text',
           placeholder: 'Country'
         },
-        value: ''
+        touched: false,
+        value: '',
+        valid: false,
+        validation: {
+          required: true
+        }
       },
       deliveryMethod: {
         elementType: 'select',
@@ -57,11 +84,37 @@ class ContactData extends Component<IProps> {
             { value: 'cheapest', displayValue: 'Cheapest' }
           ]
         },
+        valid: 'fastest',
         value: ''
       }
     },
+    formIsValid: false,
     loading: false
   };
+
+  checkValidity(
+    value: string,
+    rules: { required: any; minLength: number; maxLength: number }
+  ): boolean {
+    let isValid = true;
+    if (!rules) {
+      return true;
+    }
+
+    if (rules.required) {
+      isValid = value.trim() !== '' && isValid;
+    }
+
+    if (rules.minLength) {
+      isValid = value.length >= rules.minLength && isValid;
+    }
+
+    if (rules.maxLength) {
+      isValid = value.length <= rules.maxLength && isValid;
+    }
+
+    return isValid;
+  }
 
   inputChangedHandler = (
     event: { target: { value: string } },
@@ -76,9 +129,21 @@ class ContactData extends Component<IProps> {
       ...updatedOrderForm[inputIdentifier]
     };
     updatedFormElement.value = event.target.value;
+    updatedFormElement.valid = this.checkValidity(
+      updatedFormElement.value,
+      updatedFormElement.validation
+    );
+    updatedFormElement.touched = true;
     // @ts-ignore
     updatedOrderForm[inputIdentifier] = updatedFormElement;
-    this.setState({ orderForm: updatedOrderForm });
+
+    let formIsValid = true;
+    for (const inputIdentifier in updatedOrderForm) {
+      // @ts-ignore
+      formIsValid = updatedOrderForm[inputIdentifier].valid && formIsValid;
+    }
+
+    this.setState({ orderForm: updatedOrderForm, formIsValid });
   };
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -124,13 +189,18 @@ class ContactData extends Component<IProps> {
                 this.inputChangedHandler(event, formElement.id)
               }
               key={formElement.id}
-              elementType={formElement.config.elementType}
               elementConfig={formElement.config.elementConfig}
+              elementType={formElement.config.elementType}
+              invalid={!formElement.config.valid}
+              shouldValidate={formElement.config.validation}
+              touched={formElement.config.touched}
               value={formElement.config.value}
             />
           );
         })}
-        <Button buttonType="Success">Order</Button>
+        <Button buttonType="Success" disabled={!this.state.formIsValid}>
+          Order
+        </Button>
       </form>
     );
     if (this.state.loading) {
