@@ -2,7 +2,14 @@
 import React from 'react';
 import classes from './Button.module.css';
 
-const button = (props: Props): JSX.Element => (
+interface IProps {
+  buttonType: string;
+  clicked?(): void;
+  children: any;
+  disabled?: boolean;
+}
+
+const button = (props: IProps): JSX.Element => (
   <button
     className={[classes.Button, classes[props.buttonType]].join(' ')}
     disabled={props.disabled}
@@ -11,12 +18,5 @@ const button = (props: Props): JSX.Element => (
     {props.children}
   </button>
 );
-
-type Props = {
-  buttonType: string;
-  clicked?(): void;
-  children: any;
-  disabled?: boolean;
-};
 
 export default button;

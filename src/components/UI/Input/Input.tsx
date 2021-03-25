@@ -2,7 +2,23 @@
 import React from 'react';
 import classes from './Input.module.css';
 
-const input = (props: props): JSX.Element => {
+interface IProps {
+  onChange?(event: any): void;
+  elementConfig: {
+    invalid: boolean;
+    options: any;
+    placeholder: string;
+    type: string;
+  };
+  elementType: string;
+  invalid?: boolean;
+  label?: string;
+  shouldValidate: boolean;
+  touched: boolean;
+  value: string;
+}
+
+const input = (props: IProps): JSX.Element => {
   let inputElement: JSX.Element;
   const inputClasses = [classes.InputElement];
 
@@ -64,22 +80,6 @@ const input = (props: props): JSX.Element => {
       {inputElement}
     </div>
   );
-};
-
-type props = {
-  onChange?(event: any): void;
-  elementConfig: {
-    invalid: boolean;
-    options: any;
-    placeholder: string;
-    type: string;
-  };
-  elementType: string;
-  invalid?: boolean;
-  label?: string;
-  shouldValidate: boolean;
-  touched: boolean;
-  value: string;
 };
 
 export default input;

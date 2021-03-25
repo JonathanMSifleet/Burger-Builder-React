@@ -1,7 +1,7 @@
-const auxiliary = (props: Props): any => props.children;
-
-type Props = {
+interface IProps {
   children: any;
-};
+}
+
+const auxiliary = (props: IProps): any => props.children;
 
 export default auxiliary;

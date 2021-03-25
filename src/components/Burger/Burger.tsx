@@ -3,13 +3,17 @@ import React from 'react';
 import classes from './Burger.module.css';
 import BurgerIngredient from './BurgerIngredient/BurgerIngredient';
 
-const burger = (props: Props): JSX.Element => {
+interface Props {
+  ingredients: { [type: string]: number };
+}
+
+const burger: React.FC<Props> = ({ ingredients }): JSX.Element => {
   // convert object to array of keys
   let transformedIngredients: JSX.Element[] | JSX.Element = Object.keys(
-    props.ingredients
+    ingredients
   )
     .map((ingredientKey) => {
-      return [...Array(props.ingredients[ingredientKey])].map((_, i) => {
+      return [...Array(ingredients[ingredientKey])].map((_, i) => {
         return (
           <BurgerIngredient key={ingredientKey + i} type={ingredientKey} />
         );
@@ -31,10 +35,6 @@ const burger = (props: Props): JSX.Element => {
       <BurgerIngredient type="bread-bottom" />
     </div>
   );
-};
-
-type Props = {
-  ingredients: { [type: string]: number };
 };
 
 export default burger;

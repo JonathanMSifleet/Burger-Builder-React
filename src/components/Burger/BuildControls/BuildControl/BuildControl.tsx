@@ -2,7 +2,14 @@
 import React from 'react';
 import classes from './BuildControl.module.css';
 
-const buildControl = (props: Props): JSX.Element => (
+interface IProps {
+  added(): void;
+  disabled: boolean;
+  label: string;
+  removed(): void;
+}
+
+const buildControl = (props: IProps): JSX.Element => (
   <div className={classes.BuildControl}>
     <div className={classes.Label}>{props.label}</div>
     <button
@@ -17,12 +24,5 @@ const buildControl = (props: Props): JSX.Element => (
     </button>
   </div>
 );
-
-type Props = {
-  added(): void;
-  disabled: boolean;
-  label: string;
-  removed(): void;
-};
 
 export default buildControl;

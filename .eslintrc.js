@@ -22,7 +22,8 @@ module.exports = {
     'react/jsx-max-props-per-line': [2, { maximum: 1, when: 'multiline' }],
     'react/jsx-indent-props': [2, 2],
     'react/jsx-closing-bracket-location': [2, 'tag-aligned'],
-    '@typescript-eslint/ban-ts-comment': 'off'
+    '@typescript-eslint/ban-ts-comment': 'off',
+    'prefer-interface': true
   },
   settings: {
     react: {

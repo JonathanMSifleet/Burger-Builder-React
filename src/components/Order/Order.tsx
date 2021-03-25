@@ -2,8 +2,13 @@
 import React from 'react';
 import classes from './Order.module.css';
 
+interface IProps {
+  ingredients: { [type: string]: number };
+  price: number;
+}
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const order = (props: props): JSX.Element => {
+const order = (props: IProps): JSX.Element => {
   const ingredients = [];
 
   for (const ingredientName in props.ingredients) {
@@ -29,11 +34,6 @@ const order = (props: props): JSX.Element => {
       </p>
     </div>
   );
-};
-
-type props = {
-  ingredients: { [type: string]: number };
-  price: number;
 };
 
 export default order;

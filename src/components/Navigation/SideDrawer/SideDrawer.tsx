@@ -6,7 +6,12 @@ import Backdrop from '../../UI/Backdrop/Backdrop';
 import NavigationItems from '../NavigationItems/NavigationItems';
 import classes from './SideDrawer.module.css';
 
-const sideDrawer = (props: Props): JSX.Element => {
+interface IProps {
+  closed(): void;
+  open: boolean;
+}
+
+const sideDrawer = (props: IProps): JSX.Element => {
   let attachedClasses = [classes.SideDrawer, classes.Close];
 
   if (props.open) attachedClasses = [classes.SideDrawer, classes.Open];
@@ -24,11 +29,6 @@ const sideDrawer = (props: Props): JSX.Element => {
       </div>
     </Auxiliary>
   );
-};
-
-type Props = {
-  closed(): void;
-  open: boolean;
 };
 
 export default sideDrawer;

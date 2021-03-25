@@ -4,7 +4,13 @@ import Burger from '../../Burger/Burger';
 import Button from '../../UI/Button/Button';
 import classes from './CheckoutSummary.module.css';
 
-const checkoutSummary = (props: Props): JSX.Element => {
+interface IProps {
+  ingredients: { [type: string]: number };
+  onCheckoutCancelled(): void;
+  onCheckoutContinued(): void;
+}
+
+const checkoutSummary = (props: IProps): JSX.Element => {
   return (
     <div className={classes.CheckoutSummary}>
       <h1> We hope it tastes good!</h1>
@@ -19,12 +25,6 @@ const checkoutSummary = (props: Props): JSX.Element => {
       </Button>
     </div>
   );
-};
-
-type Props = {
-  ingredients: { [type: string]: number };
-  onCheckoutCancelled(): void;
-  onCheckoutContinued(): void;
 };
 
 export default checkoutSummary;

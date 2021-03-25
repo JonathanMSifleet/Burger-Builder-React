@@ -3,6 +3,15 @@ import React from 'react';
 import BuildControl from './BuildControl/BuildControl';
 import classes from './BuildControls.module.css';
 
+interface IProps {
+  ingredientAdded(type: string): void;
+  ingredientRemoved(type: string): void;
+  price: number;
+  purchasable: boolean;
+  disabled: { [type: string]: any };
+  ordered(): void;
+}
+
 const controls = [
   { label: 'Bacon', type: 'bacon' },
   { label: 'Cheese', type: 'cheese' },
@@ -10,7 +19,7 @@ const controls = [
   { label: 'Salad', type: 'salad' }
 ];
 
-const buildControls = (props: Props): JSX.Element => {
+const buildControls = (props: IProps): JSX.Element => {
   return (
     <div className={classes.BuildControls}>
       <p>
@@ -34,15 +43,6 @@ const buildControls = (props: Props): JSX.Element => {
       </button>
     </div>
   );
-};
-
-type Props = {
-  ingredientAdded(type: string): void;
-  ingredientRemoved(type: string): void;
-  price: number;
-  purchasable: boolean;
-  disabled: { [type: string]: any };
-  ordered(): void;
 };
 
 export default buildControls;

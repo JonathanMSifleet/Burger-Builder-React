@@ -5,7 +5,11 @@ import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
 import Auxiliary from '../Auxiliary/Auxiliary';
 import classes from './Layout.module.css';
 
-class Layout extends Component<Props> {
+interface IProps {
+  children: any;
+}
+
+class Layout extends Component<IProps> {
   state = {
     showSideDrawer: false
   };
@@ -34,9 +38,5 @@ class Layout extends Component<Props> {
     );
   }
 }
-
-type Props = {
-  children: any;
-};
 
 export default Layout;

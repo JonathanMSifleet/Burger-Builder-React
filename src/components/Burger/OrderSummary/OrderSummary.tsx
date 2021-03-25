@@ -3,6 +3,15 @@ import React, { Component } from 'react';
 import Auxiliary from '../../../hoc/Auxiliary/Auxiliary';
 import Button from '../../UI/Button/Button';
 
+interface Props {
+  ingredients: {
+    [type: string]: number;
+  };
+  price: string;
+  purchaseCancelled(): void;
+  purchaseContinued(): void;
+}
+
 // could be a functional component
 class OrderSummary extends Component<Props> {
   render(): JSX.Element {
@@ -36,14 +45,5 @@ class OrderSummary extends Component<Props> {
     );
   }
 }
-
-type Props = {
-  ingredients: {
-    [type: string]: number;
-  };
-  price: string;
-  purchaseCancelled(): void;
-  purchaseContinued(): void;
-};
 
 export default OrderSummary;

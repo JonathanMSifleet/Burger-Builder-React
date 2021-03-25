@@ -4,8 +4,15 @@ import Auxiliary from '../../../hoc/Auxiliary/Auxiliary';
 import Backdrop from '../Backdrop/Backdrop';
 import classes from './Modal.module.css';
 
-class Modal extends Component<Props> {
-  shouldComponentUpdate(nextProps: Props): boolean {
+interface IProps {
+  children: any;
+  clicked?(): void;
+  modalClosed?: () => any;
+  show: boolean;
+}
+
+class Modal extends Component<IProps> {
+  shouldComponentUpdate(nextProps: IProps): boolean {
     return (
       nextProps.show !== this.props.show ||
       nextProps.children !== this.props.children
@@ -29,12 +36,5 @@ class Modal extends Component<Props> {
     );
   }
 }
-
-type Props = {
-  children: any;
-  clicked?(): void;
-  modalClosed?: () => any;
-  show: boolean;
-};
 
 export default Modal;

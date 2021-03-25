@@ -5,7 +5,11 @@ import NavigationItems from '../NavigationItems/NavigationItems';
 import DrawerToggle from '../SideDrawer/DrawerToggle/DrawerToggle';
 import classes from './Toolbar.module.css';
 
-const toolbar = (props: Props): JSX.Element => (
+interface IProps {
+  drawerToggleClicked(): void;
+}
+
+const toolbar = (props: IProps): JSX.Element => (
   <header className={classes.Toolbar}>
     <DrawerToggle clicked={props.drawerToggleClicked} />
     <div className={classes.Logo}>
@@ -16,9 +20,5 @@ const toolbar = (props: Props): JSX.Element => (
     </nav>
   </header>
 );
-
-type Props = {
-  drawerToggleClicked(): void;
-};
 
 export default toolbar;

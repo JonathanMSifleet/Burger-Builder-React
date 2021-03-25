@@ -2,11 +2,11 @@
 import React, { Component } from 'react';
 import classes from './BurgerIngredient.module.css';
 
-type Props = {
+interface IProps {
   type: string;
-};
+}
 
-class BurgerIngredient extends Component<Props> {
+class BurgerIngredient extends Component<IProps> {
   render(): JSX.Element {
     let ingredient: any;
 
