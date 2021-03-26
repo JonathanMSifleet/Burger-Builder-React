@@ -11,10 +11,6 @@ import Auxiliary from '../../hoc/Auxiliary/Auxiliary';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import * as actionTypes from '../../store/actions';
 
-interface IIngredients {
-  ingredients: { [type: string]: number };
-}
-
 interface IProps {
   history: any;
   ings: { [type: string]: number };
@@ -33,7 +29,6 @@ class BurgerBuilder extends Component<IProps> {
     error: null as any,
     ingredients: null as any,
     loading: false,
-    purchasable: false,
     purchasing: false,
     totalPrice: 4
   };
@@ -49,16 +44,15 @@ class BurgerBuilder extends Component<IProps> {
   //   }
   // }
 
-  updatePurchaseState(ingredients: IIngredients): void {
+  updatePurchaseState(ingredients: { [type: string]: number }): boolean {
     const sum = Object.keys(ingredients)
       .map((ingredientKey) => {
-        // @ts-ignore
         return ingredients[ingredientKey];
       })
       .reduce((sum, el) => {
         return sum + el;
       }, 0);
-    this.setState({ purchasable: sum > 0 });
+    return sum > 0;
   }
 
   purchaseHandler = (): void => {
@@ -114,7 +108,7 @@ class BurgerBuilder extends Component<IProps> {
             ingredientRemoved={this.props.onIngredientRemoved}
             ordered={this.purchaseHandler}
             price={this.props.price}
-            purchasable={this.state.purchasable}
+            purchasable={this.updatePurchaseState(this.props.ings)}
           />
         </Auxiliary>
       );
