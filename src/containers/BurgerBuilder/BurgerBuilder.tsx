@@ -20,18 +20,13 @@ interface IProps {
   ings: { [type: string]: number };
   onIngredientAdded(): any;
   onIngredientRemoved(): any;
+  price: number;
 }
 
 interface IState {
   ingredients: { [type: string]: number };
+  totalPrice: number;
 }
-
-const INGREDIENT_PRICES: { [key: string]: number } = {
-  bacon: 0.7,
-  cheese: 0.4,
-  meat: 1.3,
-  salad: 0.5
-};
 
 class BurgerBuilder extends Component<IProps> {
   state = {
@@ -65,37 +60,6 @@ class BurgerBuilder extends Component<IProps> {
       }, 0);
     this.setState({ purchasable: sum > 0 });
   }
-
-  addIngredientHandler = (type: string): void => {
-    // @ts-ignore
-    let count = this.state.ingredients[type];
-    count++;
-    const updatedIngredients = {
-      ...this.state.ingredients
-    };
-    // @ts-ignore
-    updatedIngredients[type] = count;
-    const newPrice = this.state.totalPrice + INGREDIENT_PRICES[type];
-    this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
-    this.updatePurchaseState(updatedIngredients);
-  };
-
-  removeIngredientHandler = (type: string): void => {
-    // @ts-ignore
-    let count = this.state.ingredients[type];
-    if (count <= 0) {
-      return;
-    }
-    count--;
-    const updatedIngredients = {
-      ...this.state.ingredients
-    };
-    // @ts-ignore
-    updatedIngredients[type] = count;
-    const newPrice = this.state.totalPrice - INGREDIENT_PRICES[type];
-    this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
-    this.updatePurchaseState(updatedIngredients);
-  };
 
   purchaseHandler = (): void => {
     this.setState({ ...this.state, purchasing: true });
@@ -149,7 +113,7 @@ class BurgerBuilder extends Component<IProps> {
             ingredientAdded={this.props.onIngredientAdded}
             ingredientRemoved={this.props.onIngredientRemoved}
             ordered={this.purchaseHandler}
-            price={this.state.totalPrice}
+            price={this.props.price}
             purchasable={this.state.purchasable}
           />
         </Auxiliary>
@@ -157,7 +121,7 @@ class BurgerBuilder extends Component<IProps> {
       orderSummary = (
         <OrderSummary
           ingredients={this.props.ings}
-          price={this.state.totalPrice.toFixed(2)}
+          price={this.props.price.toFixed(2)}
           purchaseCancelled={this.purchaseCancelHandler}
           purchaseContinued={this.purchaseContinueHandler}
         />
@@ -182,7 +146,8 @@ class BurgerBuilder extends Component<IProps> {
 
 const mapStateToProps = (state: IState) => {
   return {
-    ings: state.ingredients
+    ings: state.ingredients,
+    price: state.totalPrice
   };
 };
 
