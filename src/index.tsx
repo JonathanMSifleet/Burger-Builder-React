@@ -4,12 +4,13 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { createStore } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import App from './App';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 import reducer from './store/reducer';
 
-const store = createStore(reducer);
+const store = createStore(reducer, composeWithDevTools());
 
 const app = (
   <Provider store={store}>
