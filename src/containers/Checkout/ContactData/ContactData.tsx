@@ -1,10 +1,22 @@
 // @ts-ignore
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import axios from '../../../axios-orders';
 import Button from '../../../components/UI/Button/Button';
 import Input from '../../../components/UI/Input/Input';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import classes from './ContactData.module.css';
+
+interface IProps {
+  history: any;
+  ingredients: { [type: string]: number };
+  price: number;
+}
+
+interface IState {
+  ingredients: { [type: string]: number };
+  totalPrice: number;
+}
 
 class ContactData extends Component<IProps> {
   state = {
@@ -215,10 +227,11 @@ class ContactData extends Component<IProps> {
   }
 }
 
-interface IProps {
-  history: any;
-  ingredients: { [type: string]: number };
-  price: number;
-}
+const mapStateToProps = (state: IState) => {
+  return {
+    ingredients: state.ingredients,
+    price: state.totalPrice
+  };
+};
 
-export default ContactData;
+export default connect(mapStateToProps)(ContactData);
