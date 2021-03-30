@@ -33,16 +33,16 @@ class BurgerBuilder extends Component<IProps> {
     totalPrice: 4
   };
 
-  // async componentDidMount() {
-  //   try {
-  //     const response = await axios.get(
-  //       'https://react-project-776bc-default-rtdb.europe-west1.firebasedatabase.app/ingredients.json'
-  //     );
-  //     this.setState({ ingredients: response.data });
-  //   } catch (e) {
-  //     this.setState({ error: true });
-  //   }
-  // }
+  async componentDidMount() {
+    try {
+      const response = await axios.get(
+        'https://react-project-776bc-default-rtdb.europe-west1.firebasedatabase.app/ingredients.json'
+      );
+      this.setState({ ingredients: response.data });
+    } catch (e) {
+      this.setState({ error: true });
+    }
+  }
 
   updatePurchaseState(ingredients: { [type: string]: number }): boolean {
     const sum = Object.keys(ingredients)
