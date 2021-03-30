@@ -1,15 +1,18 @@
-// @ts-ignore
+// @ts-expect-error
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from '../../../axios-orders';
 import Button from '../../../components/UI/Button/Button';
 import Input from '../../../components/UI/Input/Input';
 import Spinner from '../../../components/UI/Spinner/Spinner';
+import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
+import * as actions from '../../../store/actions/index';
 import classes from './ContactData.module.css';
 
 interface IProps {
   history: any;
   ingredients: { [type: string]: number };
+  onOrderBurger(): void;
   price: number;
 }
 
@@ -162,9 +165,8 @@ class ContactData extends Component<IProps> {
   orderHandler = async (event: any): Promise<void> => {
     // @ts-ignore
     event.preventDefault();
-    this.setState({ loading: true });
-    const formData = {};
 
+    const formData = {};
     for (const formElementIdentifier in this.state.orderForm) {
       // @ts-ignore
       formData[formElementIdentifier] = this.state.orderForm[
@@ -178,9 +180,8 @@ class ContactData extends Component<IProps> {
       orderData: formData,
       price: this.props.price
     };
-    await axios.post('orders.json', order);
-    this.setState({ loading: false });
-    this.props.history.push('/');
+
+    this.props.onOrderBurger(order);
   };
 
   render(): JSX.Element {
@@ -234,4 +235,11 @@ const mapStateToProps = (state: IState) => {
   };
 };
 
-export default connect(mapStateToProps)(ContactData);
+const mapDispatchToProps = (
+  dispatch: (arg0: (dispatch: (arg0: any) => void) => Promise<void>) => any
+) => {
+  onOrderBurger: (orderData: any) =>
+    dispatch(actions.purchaseBurgerStart(orderData));
+};
+
+export default connect(mapStateToProps)(withErrorHandler(ContactData, axios));
