@@ -8,13 +8,14 @@ const INGREDIENT_PRICES: { [key: string]: number } = {
 };
 
 const initialState = {
-  ingredients: { bacon: 0, cheese: 0, meat: 0, salad: 0 },
+  error: false,
+  ingredients: null as any,
   totalPrice: 4
 };
 
 const reducer = (
   state = initialState,
-  action: { type: string; ingredientName: string }
+  action: { type: string; ingredientName: string; ingredients: any }
 ): any => {
   switch (action.type) {
     case actionTypes.ADD_INGREDIENT:
@@ -24,7 +25,6 @@ const reducer = (
           ...state.ingredients,
           // override property:
           // [property to override]: newValue
-          // @ts-expect-error string CAN be used as index
           [action.ingredientName]: state.ingredients[action.ingredientName] + 1
         },
         totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName]
@@ -34,10 +34,20 @@ const reducer = (
         ...state,
         ingredients: {
           ...state.ingredients,
-          // @ts-expect-error string CAN be used as index
           [action.ingredientName]: state.ingredients[action.ingredientName] - 1
         },
         totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName]
+      };
+    case actionTypes.SET_INGREDIENTS:
+      return {
+        ...state,
+        ingredients: action.ingredients,
+        error: false
+      };
+    case actionTypes.FETCH_INGREDIENTS_FAILED:
+      return {
+        ...state,
+        error: true
       };
   }
   return state;

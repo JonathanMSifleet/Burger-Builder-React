@@ -12,36 +12,31 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import * as burgerBuilderActions from '../../store/actions/index';
 
 interface IProps {
+  error: boolean;
   history: any;
-  ings: { [type: string]: number };
+  ingredients: { [type: string]: number };
   onIngredientAdded(): any;
   onIngredientRemoved(): any;
+  onInitIngredients(): void;
   price: number;
 }
 
 interface IState {
+  error: boolean;
   ingredients: { [type: string]: number };
   totalPrice: number;
 }
 
 class BurgerBuilder extends Component<IProps> {
   state = {
-    error: null as any,
+    error: (null as unknown) as boolean,
     ingredients: null as any,
-    loading: false,
     purchasing: false,
     totalPrice: 4
   };
 
-  async componentDidMount() {
-    try {
-      const response = await axios.get(
-        'https://react-project-776bc-default-rtdb.europe-west1.firebasedatabase.app/ingredients.json'
-      );
-      this.setState({ ingredients: response.data });
-    } catch (e) {
-      this.setState({ error: true });
-    }
+  componentDidMount() {
+    this.props.onInitIngredients();
   }
 
   updatePurchaseState(ingredients: { [type: string]: number }): boolean {
@@ -69,7 +64,7 @@ class BurgerBuilder extends Component<IProps> {
 
   render(): JSX.Element {
     const disabledInfo = {
-      ...this.props.ings
+      ...this.props.ingredients
     };
     for (const key in disabledInfo) {
       // @ts-ignore
@@ -77,37 +72,35 @@ class BurgerBuilder extends Component<IProps> {
     }
 
     let orderSummary = null;
-    let burger = this.state.error ? (
+    let burger = this.props.error ? (
       <p>Ingredients can't be loaded!</p>
     ) : (
       <Spinner />
     );
 
-    if (this.props.ings) {
+    if (this.props.ingredients) {
       burger = (
         <Auxiliary>
-          <Burger ingredients={this.props.ings} />
+          <Burger ingredients={this.props.ingredients} />
           <BuildControls
             disabled={disabledInfo}
             ingredientAdded={this.props.onIngredientAdded}
             ingredientRemoved={this.props.onIngredientRemoved}
             ordered={this.purchaseHandler}
             price={this.props.price}
-            purchasable={this.updatePurchaseState(this.props.ings)}
+            purchasable={this.updatePurchaseState(this.props.ingredients)}
           />
         </Auxiliary>
       );
       orderSummary = (
         <OrderSummary
-          ingredients={this.props.ings}
+          ingredients={this.props.ingredients}
           price={this.props.price.toFixed(2)}
           purchaseCancelled={this.purchaseCancelHandler}
           purchaseContinued={this.purchaseContinueHandler}
         />
       );
     }
-
-    if (this.state.loading) orderSummary = <Spinner />;
 
     return (
       <Auxiliary>
@@ -125,19 +118,19 @@ class BurgerBuilder extends Component<IProps> {
 
 const mapStateToProps = (state: IState) => {
   return {
-    ings: state.ingredients,
+    error: state.error,
+    ingredients: state.ingredients,
     price: state.totalPrice
   };
 };
 
-const mapDispatchToProps = (
-  dispatch: (arg0: { type: string; ingredientName: any }) => any
-) => {
+const mapDispatchToProps = (dispatch: (arg0: any) => any) => {
   return {
     onIngredientAdded: (ingredientName: string) =>
       dispatch(burgerBuilderActions.addIngredient(ingredientName)),
     onIngredientRemoved: (ingredientName: string) =>
-      dispatch(burgerBuilderActions.removeIngredient(ingredientName))
+      dispatch(burgerBuilderActions.removeIngredient(ingredientName)),
+    onInitIngredients: () => dispatch(burgerBuilderActions.initIngredients())
   };
 };
 
