@@ -12,12 +12,14 @@ import classes from './ContactData.module.css';
 interface IProps {
   history: any;
   ingredients: { [type: string]: number };
-  onOrderBurger(): void;
+  loading: boolean;
+  onOrderBurger(order: any): void;
   price: number;
 }
 
 interface IState {
   ingredients: { [type: string]: number };
+  loading: boolean;
   totalPrice: number;
 }
 
@@ -103,8 +105,7 @@ class ContactData extends Component<IProps> {
         value: ''
       }
     },
-    formIsValid: false,
-    loading: false
+    formIsValid: false
   };
 
   checkValidity(
@@ -216,7 +217,7 @@ class ContactData extends Component<IProps> {
         </Button>
       </form>
     );
-    if (this.state.loading) {
+    if (this.props.loading) {
       form = <Spinner />;
     }
     return (
@@ -231,15 +232,19 @@ class ContactData extends Component<IProps> {
 const mapStateToProps = (state: IState) => {
   return {
     ingredients: state.ingredients,
+    loading: state.loading,
     price: state.totalPrice
   };
 };
 
-const mapDispatchToProps = (
-  dispatch: (arg0: (dispatch: (arg0: any) => void) => Promise<void>) => any
-) => {
-  onOrderBurger: (orderData: any) =>
-    dispatch(actions.purchaseBurgerStart(orderData));
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    onOrderBurger: (orderData: any) =>
+      dispatch(actions.purchaseBurger(orderData))
+  };
 };
 
-export default connect(mapStateToProps)(withErrorHandler(ContactData, axios));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withErrorHandler(ContactData, axios));
