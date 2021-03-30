@@ -9,15 +9,16 @@ import Modal from '../../components/UI/Modal/Modal';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import Auxiliary from '../../hoc/Auxiliary/Auxiliary';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
-import * as burgerBuilderActions from '../../store/actions/index';
+import * as actions from '../../store/actions/index';
 
 interface IProps {
   error: boolean;
   history: any;
   ingredients: { [type: string]: number };
-  onIngredientAdded(): any;
-  onIngredientRemoved(): any;
+  onIngredientAdded(): void;
+  onIngredientRemoved(): void;
   onInitIngredients(): void;
+  onInitPurchase(): void;
   price: number;
 }
 
@@ -53,6 +54,7 @@ class BurgerBuilder extends Component<IProps> {
   };
 
   purchaseContinueHandler = (): void => {
+    this.props.onInitPurchase();
     this.props.history.push('/checkout');
   };
 
@@ -127,10 +129,11 @@ const mapStateToProps = (state: {
 const mapDispatchToProps = (dispatch: (arg0: any) => any) => {
   return {
     onIngredientAdded: (ingredientName: string) =>
-      dispatch(burgerBuilderActions.addIngredient(ingredientName)),
+      dispatch(actions.addIngredient(ingredientName)),
     onIngredientRemoved: (ingredientName: string) =>
-      dispatch(burgerBuilderActions.removeIngredient(ingredientName)),
-    onInitIngredients: () => dispatch(burgerBuilderActions.initIngredients())
+      dispatch(actions.removeIngredient(ingredientName)),
+    onInitIngredients: () => dispatch(actions.initIngredients()),
+    onInitPurchase: () => dispatch(actions.purchaseInit())
   };
 };
 

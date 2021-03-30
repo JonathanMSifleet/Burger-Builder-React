@@ -8,8 +8,11 @@ import ContactData from './ContactData/ContactData';
 interface IProps {
   history: any;
   ings: { [type: string]: number };
-  location: any;
-  match: any;
+  onInitPurchase(): void;
+  match: {
+    url: string;
+  };
+  purchased: boolean;
 }
 
 class Checkout extends Component<IProps> {
@@ -25,8 +28,12 @@ class Checkout extends Component<IProps> {
     let summary = <Redirect to="/" />;
 
     if (this.props.ings) {
+      const purchasedRedirect = this.props.purchased ? (
+        <Redirect to="/" />
+      ) : null;
       summary = (
         <div>
+          {purchasedRedirect}
           <CheckoutSummary
             ingredients={this.props.ings}
             onCheckoutCancelled={this.checkoutCancelledHandler}
@@ -49,9 +56,11 @@ const mapStateToProps = (state: {
     ingredients: { [type: string]: number };
     totalPrice: number;
   };
+  order: { purchased: boolean };
 }) => {
   return {
-    ings: state.burgerBuilder.ingredients
+    ings: state.burgerBuilder.ingredients,
+    purchased: state.order.purchased
   };
 };
 
