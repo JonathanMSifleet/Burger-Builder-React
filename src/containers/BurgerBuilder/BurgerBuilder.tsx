@@ -21,12 +21,6 @@ interface IProps {
   price: number;
 }
 
-interface IState {
-  error: boolean;
-  ingredients: { [type: string]: number };
-  totalPrice: number;
-}
-
 class BurgerBuilder extends Component<IProps> {
   state = {
     error: (null as unknown) as boolean,
@@ -116,11 +110,17 @@ class BurgerBuilder extends Component<IProps> {
   }
 }
 
-const mapStateToProps = (state: IState) => {
+const mapStateToProps = (state: {
+  burgerBuilder: {
+    error: boolean;
+    ingredients: { [type: string]: number };
+    totalPrice: number;
+  };
+}) => {
   return {
-    error: state.error,
-    ingredients: state.ingredients,
-    price: state.totalPrice
+    error: state.burgerBuilder.error,
+    ingredients: state.burgerBuilder.ingredients,
+    price: state.burgerBuilder.totalPrice
   };
 };
 

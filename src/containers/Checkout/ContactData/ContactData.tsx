@@ -17,12 +17,6 @@ interface IProps {
   price: number;
 }
 
-interface IState {
-  ingredients: { [type: string]: number };
-  loading: boolean;
-  totalPrice: number;
-}
-
 class ContactData extends Component<IProps> {
   state = {
     orderForm: {
@@ -102,7 +96,7 @@ class ContactData extends Component<IProps> {
           ]
         },
         valid: 'fastest',
-        value: ''
+        value: 'fastest'
       }
     },
     formIsValid: false
@@ -229,11 +223,17 @@ class ContactData extends Component<IProps> {
   }
 }
 
-const mapStateToProps = (state: IState) => {
+const mapStateToProps = (state: {
+  burgerBuilder: {
+    ingredients: { [type: string]: number };
+    totalPrice: number;
+  };
+  order: { loading: boolean };
+}) => {
   return {
-    ingredients: state.ingredients,
-    loading: state.loading,
-    price: state.totalPrice
+    ingredients: state.burgerBuilder.ingredients,
+    loading: state.order.loading,
+    price: state.burgerBuilder.totalPrice
   };
 };
 

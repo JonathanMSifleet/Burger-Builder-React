@@ -10,7 +10,7 @@ const initialState = {
 const reducer = (
   state = initialState,
   action: { type: string; orderData: any; orderId: string }
-) => {
+): any => {
   switch (action.type) {
     case actionTypes.PURCHASE_BURGER_START:
       return {
@@ -36,3 +36,5 @@ const reducer = (
       return state;
   }
 };
+
+export default reducer;

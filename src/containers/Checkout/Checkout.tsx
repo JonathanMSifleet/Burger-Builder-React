@@ -12,12 +12,7 @@ interface IProps {
   match: any;
 }
 
-interface IState {
-  ingredients: { [type: string]: number };
-  totalPrice: number;
-}
-
-class Checkout extends Component<IProps, IState> {
+class Checkout extends Component<IProps> {
   checkoutCancelledHandler = (): void => {
     this.props.history.goBack();
   };
@@ -49,9 +44,14 @@ class Checkout extends Component<IProps, IState> {
   }
 }
 
-const mapStateToProps = (state: IState) => {
+const mapStateToProps = (state: {
+  burgerBuilder: {
+    ingredients: { [type: string]: number };
+    totalPrice: number;
+  };
+}) => {
   return {
-    ings: state.ingredients
+    ings: state.burgerBuilder.ingredients
   };
 };
 
