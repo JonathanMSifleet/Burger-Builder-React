@@ -1,11 +1,11 @@
 import axios from '../../axios-orders';
+import { IOrderData } from '../../containers/Checkout/ContactData/ContactData';
 import * as actionTypes from './actionTypes';
 
 export const purchaseBurgerSuccess = (
   id: string,
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  orderData: any
-): { type: string; orderId: string; orderData: any } => {
+  orderData: IOrderData
+): { type: string; orderId: string; orderData: IOrderData } => {
   return {
     orderData,
     orderId: id,
@@ -27,8 +27,7 @@ export const purchaseBurgerStart = (): { type: string } => {
   };
 };
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const purchaseBurger = (orderData: any) => {
+export const purchaseBurger = (orderData: IOrderData) => {
   return async (dispatch: (arg0: any) => void): Promise<void> => {
     dispatch(purchaseBurgerStart());
     try {

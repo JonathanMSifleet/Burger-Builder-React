@@ -1,15 +1,14 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+import { IOrderData } from '../../containers/Checkout/ContactData/ContactData';
 import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
   loading: false,
-  orders: []
+  orders: [] as IOrderData[]
 };
 
-// @ts-ignore
 const reducer = (
   state = initialState,
-  action: { type: string; orderData: any; orderId: string }
+  action: { type: any; orderData: IOrderData; orderId: any }
 ): any => {
   switch (action.type) {
     case actionTypes.PURCHASE_BURGER_START:

@@ -17,6 +17,15 @@ interface IProps {
   price: number;
 }
 
+export interface IOrderData {
+  country: string;
+  deliveryMethod: string;
+  email: string;
+  name: string;
+  postCode: string;
+  street: string;
+}
+
 class ContactData extends Component<IProps> {
   state = {
     orderForm: {
@@ -239,7 +248,7 @@ const mapStateToProps = (state: {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    onOrderBurger: (orderData: any) =>
+    onOrderBurger: (orderData: IOrderData) =>
       dispatch(actions.purchaseBurger(orderData))
   };
 };
