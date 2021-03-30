@@ -8,9 +8,9 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import App from './App';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
-import reducer from './store/reducers/burgerBuilder';
+import burgerBuilderReducer from './store/reducers/burgerBuilder';
 
-const store = createStore(reducer, composeWithDevTools());
+const store = createStore(burgerBuilderReducer, composeWithDevTools());
 
 const app = (
   <Provider store={store}>

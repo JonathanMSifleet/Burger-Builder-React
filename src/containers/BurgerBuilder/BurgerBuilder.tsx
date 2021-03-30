@@ -9,7 +9,7 @@ import Modal from '../../components/UI/Modal/Modal';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import Auxiliary from '../../hoc/Auxiliary/Auxiliary';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
-import * as actionTypes from '../../store/actions/actionTypes';
+import * as burgerBuilderActions from '../../store/actions/index';
 
 interface IProps {
   history: any;
@@ -135,9 +135,9 @@ const mapDispatchToProps = (
 ) => {
   return {
     onIngredientAdded: (ingredientName: string) =>
-      dispatch({ type: actionTypes.ADD_INGREDIENT, ingredientName }),
+      dispatch(burgerBuilderActions.addIngredient(ingredientName)),
     onIngredientRemoved: (ingredientName: string) =>
-      dispatch({ type: actionTypes.REMOVE_INGREDIENT, ingredientName })
+      dispatch(burgerBuilderActions.removeIngredient(ingredientName))
   };
 };
 
