@@ -8,7 +8,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import App from './App';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
-import reducer from './store/reducer';
+import reducer from './store/reducers/burgerBuilder';
 
 const store = createStore(reducer, composeWithDevTools());
 
