@@ -46,11 +46,11 @@ class Orders extends Component<IProps> {
 }
 
 const mapStateToProps = (state: {
-  orders: { orders: any; loading: boolean };
+  order: { orders: any; loading: boolean };
 }) => {
   return {
-    loading: state.orders.loading,
-    orders: state.orders.orders
+    loading: state.order.loading,
+    orders: state.order.orders
   };
 };
 
