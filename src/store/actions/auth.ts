@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import axios from 'axios';
 import * as actionTypes from './actionTypes';
 
@@ -15,6 +13,7 @@ export const authStart = (): { type: string } => {
   };
 };
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const authSuccess = (authData: any): { type: string; authData: any } => {
   return {
     type: actionTypes.AUTH_SUCCESS,
@@ -22,6 +21,7 @@ export const authSuccess = (authData: any): { type: string; authData: any } => {
   };
 };
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const authFail = (error: any): { type: string; error: any } => {
   return {
     type: actionTypes.AUTH_FAIL,
@@ -29,20 +29,27 @@ export const authFail = (error: any): { type: string; error: any } => {
   };
 };
 
-// @ts-ignore
-export const auth = (email: string, password: string) => {
-  const signupHandler = async (email: string, password: string) => {
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const auth = (email: string, password: string, isSignup: boolean) => {
+  const authHandler = async (
+    email: string,
+    password: string,
+    isSignup: boolean
+  ) => {
     const apiKey = 'AIzaSyDvjZNwI1H5NsUPGNLRlt4bCameEpvcqVE';
+    let url;
     let response;
     try {
-      response = await axios.post(
-        `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${apiKey}`,
-        {
-          email,
-          password,
-          returnSecureToken: true
-        }
-      );
+      if (isSignup) {
+        url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${apiKey}`;
+      } else {
+        url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`;
+      }
+      response = await axios.post(url, {
+        email,
+        password,
+        returnSecureToken: true
+      });
       response = response.data;
     } catch (e) {
       response = e;
@@ -54,7 +61,7 @@ export const auth = (email: string, password: string) => {
   return async (dispatch: any) => {
     dispatch(authStart());
 
-    const token = await signupHandler(email, password);
+    const token = await authHandler(email, password, isSignup);
     console.log('token:', token);
 
     // const authData = {

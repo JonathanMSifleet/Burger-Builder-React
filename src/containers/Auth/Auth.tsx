@@ -7,7 +7,7 @@ import * as actions from '../../store/actions/index';
 import classes from './Auth.module.css';
 
 interface IProps {
-  onAuth(email: string, password: string): void;
+  onAuth(email: string, password: string, isSignup: boolean): void;
 }
 
 class Auth extends Component<IProps> {
@@ -41,7 +41,8 @@ class Auth extends Component<IProps> {
           required: true
         }
       }
-    }
+    },
+    isSignup: true
   };
 
   checkValidity(
@@ -103,8 +104,17 @@ class Auth extends Component<IProps> {
     event.preventDefault();
     this.props.onAuth(
       this.state.controls.email.value,
-      this.state.controls.password.value
+      this.state.controls.password.value,
+      this.state.isSignup
     );
+  };
+
+  switchAuthModeHandler = () => {
+    this.setState((prevState: any) => {
+      return {
+        isSignup: !prevState.isSignup
+      };
+    });
   };
 
   render(): JSX.Element {
@@ -135,6 +145,9 @@ class Auth extends Component<IProps> {
         <form onSubmit={this.submitHandler}>
           {form}
           <Button buttonType="Success">Submit</Button>
+          <Button buttonType="Danger" clicked={this.switchAuthModeHandler}>
+            Switch to {this.state.isSignup ? 'sign in' : 'sign up'}
+          </Button>
         </form>
       </div>
     );
@@ -143,8 +156,8 @@ class Auth extends Component<IProps> {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    onAuth: (email: string, password: string) =>
-      dispatch(actions.auth(email, password))
+    onAuth: (email: string, password: string, isSignup: boolean) =>
+      dispatch(actions.auth(email, password, isSignup))
   };
 };
 
