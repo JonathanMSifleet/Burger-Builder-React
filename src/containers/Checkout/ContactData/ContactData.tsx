@@ -52,6 +52,7 @@ class ContactData extends Component<IProps> {
         value: '',
         valid: false,
         validation: {
+          isEmail: true,
           required: true
         }
       },
@@ -104,7 +105,7 @@ class ContactData extends Component<IProps> {
             { value: 'cheapest', displayValue: 'Cheapest' }
           ]
         },
-        valid: 'fastest',
+        valid: true,
         value: 'fastest'
       }
     },
@@ -113,7 +114,12 @@ class ContactData extends Component<IProps> {
 
   checkValidity(
     value: string,
-    rules: { required: any; minLength: number; maxLength: number }
+    rules: {
+      isEmail: boolean;
+      maxLength: number;
+      minLength: number;
+      required: any;
+    }
   ): boolean {
     let isValid = true;
     if (!rules) {
@@ -130,6 +136,11 @@ class ContactData extends Component<IProps> {
 
     if (rules.maxLength) {
       isValid = value.length <= rules.maxLength && isValid;
+    }
+
+    if (rules.isEmail) {
+      const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+      isValid = pattern.test(value) && isValid;
     }
 
     return isValid;
