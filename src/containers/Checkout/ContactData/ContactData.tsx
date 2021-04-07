@@ -13,8 +13,9 @@ interface IProps {
   history: any;
   ingredients: { [type: string]: number };
   loading: boolean;
-  onOrderBurger(order: any): void;
+  onOrderBurger(order: any, token: string): void;
   price: number;
+  token: string;
 }
 
 export interface IOrderData {
@@ -196,7 +197,7 @@ class ContactData extends Component<IProps> {
       price: this.props.price
     };
 
-    this.props.onOrderBurger(order);
+    this.props.onOrderBurger(order, this.props.token);
   };
 
   render(): JSX.Element {
@@ -249,18 +250,20 @@ const mapStateToProps = (state: {
     totalPrice: number;
   };
   order: { loading: boolean };
+  auth: { token: string };
 }) => {
   return {
     ingredients: state.burgerBuilder.ingredients,
     loading: state.order.loading,
-    price: state.burgerBuilder.totalPrice
+    price: state.burgerBuilder.totalPrice,
+    token: state.auth.token
   };
 };
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    onOrderBurger: (orderData: IOrderData) =>
-      dispatch(actions.purchaseBurger(orderData))
+    onOrderBurger: (orderData: IOrderData, token: string) =>
+      dispatch(actions.purchaseBurger(orderData, token))
   };
 };
 
