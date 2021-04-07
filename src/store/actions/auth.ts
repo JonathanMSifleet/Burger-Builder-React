@@ -66,7 +66,7 @@ export const auth = (
       dispatch(authSuccess(response.data.idToken, response.data.localId));
     } catch (e) {
       console.log(e);
-      dispatch(authFail(e));
+      dispatch(authFail(e.response.data.error));
     }
   };
 };

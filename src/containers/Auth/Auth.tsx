@@ -3,10 +3,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
+import Spinner from '../../components/UI/Spinner/Spinner';
 import * as actions from '../../store/actions/index';
 import classes from './Auth.module.css';
 
 interface IProps {
+  error: any;
+  loading: boolean;
   onAuth(email: string, password: string, isSignup: boolean): void;
 }
 
@@ -127,7 +130,7 @@ class Auth extends Component<IProps> {
       });
     }
 
-    const form = formElementsArray.map((formElement) => (
+    let form = formElementsArray.map((formElement) => (
       <Input
         elementConfig={formElement.config.elementConfig}
         elementType={formElement.config.elementType}
@@ -138,10 +141,21 @@ class Auth extends Component<IProps> {
         touched={formElement.config.touched}
         value={formElement.config.value}
       />
-    ));
+    )) as JSX.Element | JSX.Element[];
+
+    if (this.props.loading) {
+      form = <Spinner />;
+    }
+
+    let errorMessage = null as JSX.Element | null;
+
+    if (this.props.error) {
+      errorMessage = <p>{this.props.error.message}</p>;
+    }
 
     return (
       <div className={classes.Auth}>
+        {errorMessage}
         <form onSubmit={this.submitHandler}>
           {form}
           <Button buttonType="Success">Submit</Button>
@@ -154,6 +168,15 @@ class Auth extends Component<IProps> {
   }
 }
 
+const mapStateToProps = (state: {
+  auth: { error: string; loading: boolean };
+}) => {
+  return {
+    error: state.auth.error,
+    loading: state.auth.loading
+  };
+};
+
 const mapDispatchToProps = (dispatch: any) => {
   return {
     onAuth: (email: string, password: string, isSignup: boolean) =>
@@ -161,4 +184,4 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(Auth);
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);
