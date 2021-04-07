@@ -1,6 +1,7 @@
 // @ts-expect-error
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
 import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
 import Spinner from '../../components/UI/Spinner/Spinner';
@@ -9,6 +10,7 @@ import classes from './Auth.module.css';
 
 interface IProps {
   error: any;
+  isAuthenticated: boolean;
   loading: boolean;
   onAuth(email: string, password: string, isSignup: boolean): void;
 }
@@ -153,8 +155,14 @@ class Auth extends Component<IProps> {
       errorMessage = <p>{this.props.error.message}</p>;
     }
 
+    let authRedirect = null;
+    if (this.props.isAuthenticated) {
+      authRedirect = <Redirect to="/" />;
+    }
+
     return (
       <div className={classes.Auth}>
+        {authRedirect}
         {errorMessage}
         <form onSubmit={this.submitHandler}>
           {form}
@@ -169,11 +177,12 @@ class Auth extends Component<IProps> {
 }
 
 const mapStateToProps = (state: {
-  auth: { error: string; loading: boolean };
+  auth: { error: string; loading: boolean; token: string };
 }) => {
   return {
     error: state.auth.error,
-    loading: state.auth.loading
+    loading: state.auth.loading,
+    isAuthenticated: state.auth.token !== null
   };
 };
 

@@ -6,6 +6,7 @@ import classes from './BuildControls.module.css';
 interface IProps {
   ingredientAdded(type: string): void;
   ingredientRemoved(type: string): void;
+  isAuth: boolean;
   price: number;
   purchasable: boolean;
   disabled: { [type: string]: any };
@@ -39,7 +40,7 @@ const buildControls = (props: IProps): JSX.Element => {
         disabled={!props.purchasable}
         onClick={props.ordered}
       >
-        <strong>Order now</strong>
+        {props.isAuth ? 'ORDER NOW' : 'Sign up to order'}
       </button>
     </div>
   );

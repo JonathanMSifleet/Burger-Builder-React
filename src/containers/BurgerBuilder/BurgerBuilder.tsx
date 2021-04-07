@@ -15,6 +15,7 @@ interface IProps {
   error: boolean;
   history: any;
   ingredients: { [type: string]: number };
+  isAuthenticated: boolean;
   onIngredientAdded(): void;
   onIngredientRemoved(): void;
   onInitIngredients(): void;
@@ -46,7 +47,11 @@ class BurgerBuilder extends Component<IProps> {
   }
 
   purchaseHandler = (): void => {
-    this.setState({ ...this.state, purchasing: true });
+    if (this.props.isAuthenticated) {
+      this.setState({ purchasing: true });
+    } else {
+      this.props.history.push('/auth');
+    }
   };
 
   purchaseCancelHandler = (): void => {
@@ -82,6 +87,7 @@ class BurgerBuilder extends Component<IProps> {
             disabled={disabledInfo}
             ingredientAdded={this.props.onIngredientAdded}
             ingredientRemoved={this.props.onIngredientRemoved}
+            isAuth={this.props.isAuthenticated}
             ordered={this.purchaseHandler}
             price={this.props.price}
             purchasable={this.updatePurchaseState(this.props.ingredients)}
@@ -118,10 +124,12 @@ const mapStateToProps = (state: {
     ingredients: { [type: string]: number };
     totalPrice: number;
   };
+  auth: { token: string };
 }) => {
   return {
     error: state.burgerBuilder.error,
     ingredients: state.burgerBuilder.ingredients,
+    isAuthenticated: state.auth.token !== null,
     price: state.burgerBuilder.totalPrice
   };
 };
