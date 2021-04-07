@@ -32,19 +32,27 @@ export const authFail = (error: string): { type: string; error: string } => {
   };
 };
 
+export const logout = (): { type: string } => {
+  return {
+    type: actionTypes.AUTH_LOGOUT
+  };
+};
+
+export const checkAuthTimeout = (expirationTime: number) => {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  return (dispatch: any): void => {
+    setTimeout(() => {
+      dispatch(logout());
+    }, expirationTime * 1000);
+  };
+};
+
 export const auth = (
   email: string,
   password: string,
   isSignup: boolean
 ): any => {
-  return async (
-    dispatch: (arg0: {
-      type: string;
-      idToken?: string;
-      userId?: string;
-      error?: string;
-    }) => void
-  ) => {
+  return async (dispatch: any) => {
     dispatch(authStart());
 
     const apiKey = 'AIzaSyDvjZNwI1H5NsUPGNLRlt4bCameEpvcqVE';
@@ -55,17 +63,19 @@ export const auth = (
     } else {
       url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`;
     }
+
     try {
       const response = await axios.post(url, {
         email: email,
         password: password,
         returnSecureToken: true
       });
-      console.log('🚀 ~ file: auth.ts ~ line 64 ~ response', response);
 
+      console.log('Response:', response);
       dispatch(authSuccess(response.data.idToken, response.data.localId));
+      dispatch(checkAuthTimeout(response.data.expiresIn));
     } catch (e) {
-      console.log(e);
+      console.error(e);
       dispatch(authFail(e.response.data.error));
     }
   };

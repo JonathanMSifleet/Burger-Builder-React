@@ -32,11 +32,16 @@ const authSuccess = (
   });
 };
 
-const authFail = (state: any, action: { error: string }) => {
+const authFail = (state: IState, action: { error: string }) => {
   return updateObject(state, {
     error: action.error,
     loading: false
   });
+};
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const authLogout = (state: IState, _action: any) => {
+  return updateObject(state, { token: null, userId: null });
 };
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -48,6 +53,8 @@ const reducer = (state = initialState, action: any): any => {
       return authSuccess(state, action);
     case actionTypes.AUTH_FAIL:
       return authFail(state, action);
+    case actionTypes.AUTH_LOGOUT:
+      return authLogout(state, action);
     default:
       return state;
   }
