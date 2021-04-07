@@ -7,6 +7,7 @@ import classes from './Toolbar.module.css';
 
 interface IProps {
   drawerToggleClicked(): void;
+  isAuth: boolean;
 }
 
 const toolbar = (props: IProps): JSX.Element => (
@@ -16,7 +17,7 @@ const toolbar = (props: IProps): JSX.Element => (
       <Logo />
     </div>
     <nav className={classes.DesktopOnly}>
-      <NavigationItems />
+      <NavigationItems isAuthenticated={props.isAuth} />
     </nav>
   </header>
 );

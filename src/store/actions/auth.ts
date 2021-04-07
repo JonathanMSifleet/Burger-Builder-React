@@ -75,7 +75,6 @@ export const auth = (
       dispatch(authSuccess(response.data.idToken, response.data.localId));
       dispatch(checkAuthTimeout(response.data.expiresIn));
     } catch (e) {
-      console.error(e);
       dispatch(authFail(e.response.data.error));
     }
   };

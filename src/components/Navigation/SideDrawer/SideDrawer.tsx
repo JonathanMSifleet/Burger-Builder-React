@@ -8,6 +8,7 @@ import classes from './SideDrawer.module.css';
 
 interface IProps {
   closed(): void;
+  isAuth: boolean;
   open: boolean;
 }
 
@@ -24,7 +25,7 @@ const sideDrawer = (props: IProps): JSX.Element => {
           <Logo />
         </div>
         <nav>
-          <NavigationItems />
+          <NavigationItems isAuthenticated={props.isAuth} />
         </nav>
       </div>
     </Auxiliary>

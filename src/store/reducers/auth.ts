@@ -9,10 +9,10 @@ interface IState {
 }
 
 const initialState = {
-  token: undefined,
-  userId: undefined,
-  error: undefined,
-  loading: false
+  error: (null as unknown) as string,
+  loading: false,
+  token: (null as unknown) as string,
+  userId: (null as unknown) as string
 } as IState;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
