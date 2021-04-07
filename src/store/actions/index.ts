@@ -1,4 +1,4 @@
-export { auth } from './auth';
+export { auth, logout } from './auth';
 export {
   addIngredient,
   initIngredients,
