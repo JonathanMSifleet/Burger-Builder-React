@@ -20,6 +20,7 @@ interface IProps {
   onIngredientRemoved(): void;
   onInitIngredients(): void;
   onInitPurchase(): void;
+  onSetAuthRedirectPath(path: string): void;
   price: number;
 }
 
@@ -50,6 +51,7 @@ class BurgerBuilder extends Component<IProps> {
     if (this.props.isAuthenticated) {
       this.setState({ purchasing: true });
     } else {
+      this.props.onSetAuthRedirectPath('/checkout');
       this.props.history.push('/auth');
     }
   };
@@ -141,7 +143,9 @@ const mapDispatchToProps = (dispatch: (arg0: any) => any) => {
     onIngredientRemoved: (ingredientName: string) =>
       dispatch(actions.removeIngredient(ingredientName)),
     onInitIngredients: () => dispatch(actions.initIngredients()),
-    onInitPurchase: () => dispatch(actions.purchaseInit())
+    onInitPurchase: () => dispatch(actions.purchaseInit()),
+    onSetAuthRedirectPath: (path: string) =>
+      dispatch(actions.setAuthRedirectPath(path))
   };
 };
 

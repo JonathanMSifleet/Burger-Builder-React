@@ -2,13 +2,15 @@ import * as actionTypes from '../actions/actionTypes';
 import { updateObject } from './../utility';
 
 interface IState {
-  token?: string;
-  userId?: string;
+  authRedirectPath: string;
   error?: string;
   loading: boolean;
+  token?: string;
+  userId?: string;
 }
 
 const initialState = {
+  authRedirectPath: '/',
   error: (null as unknown) as string,
   loading: false,
   token: (null as unknown) as string,
@@ -44,6 +46,12 @@ const authLogout = (state: IState, _action: any) => {
   return updateObject(state, { token: null, userId: null });
 };
 
+const setAuthRedirectPath = (state: IState, action: { path: string }) => {
+  return updateObject(state, {
+    authRedirectPath: action.path
+  });
+};
+
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const reducer = (state = initialState, action: any): any => {
   switch (action.type) {
@@ -55,6 +63,8 @@ const reducer = (state = initialState, action: any): any => {
       return authFail(state, action);
     case actionTypes.AUTH_LOGOUT:
       return authLogout(state, action);
+    case actionTypes.SET_AUTH_REDIRECT_PATH:
+      return setAuthRedirectPath(state, action);
     default:
       return state;
   }

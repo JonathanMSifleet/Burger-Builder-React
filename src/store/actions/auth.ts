@@ -79,3 +79,12 @@ export const auth = (
     }
   };
 };
+
+export const setAuthRedirectPath = (
+  path: string
+): { path: string; type: string } => {
+  return {
+    path,
+    type: actionTypes.SET_AUTH_REDIRECT_PATH
+  };
+};

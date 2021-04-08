@@ -9,10 +9,13 @@ import * as actions from '../../store/actions/index';
 import classes from './Auth.module.css';
 
 interface IProps {
+  authRedirectPath: string;
+  buildingBurger: boolean;
   error: any;
   isAuthenticated: boolean;
   loading: boolean;
   onAuth(email: string, password: string, isSignup: boolean): void;
+  onSetAuthRedirectPath(): void;
 }
 
 class Auth extends Component<IProps> {
@@ -49,6 +52,12 @@ class Auth extends Component<IProps> {
     },
     isSignup: true
   };
+
+  componentDidMount() {
+    if (!this.props.buildingBurger && this.props.authRedirectPath !== '/') {
+      this.props.onSetAuthRedirectPath();
+    }
+  }
 
   checkValidity(
     value: string,
@@ -157,7 +166,7 @@ class Auth extends Component<IProps> {
 
     let authRedirect = null;
     if (this.props.isAuthenticated) {
-      authRedirect = <Redirect to="/" />;
+      authRedirect = <Redirect to={this.props.authRedirectPath} />;
     }
 
     return (
@@ -177,9 +186,17 @@ class Auth extends Component<IProps> {
 }
 
 const mapStateToProps = (state: {
-  auth: { error: string; loading: boolean; token: string };
+  auth: {
+    authRedirectPath: string;
+    error: string;
+    loading: boolean;
+    token: string;
+  };
+  burgerBuilder: { building: boolean };
 }) => {
   return {
+    authRedirectPath: state.auth.authRedirectPath,
+    buildingBurger: state.burgerBuilder.building,
     error: state.auth.error,
     loading: state.auth.loading,
     isAuthenticated: state.auth.token !== null
@@ -189,7 +206,8 @@ const mapStateToProps = (state: {
 const mapDispatchToProps = (dispatch: any) => {
   return {
     onAuth: (email: string, password: string, isSignup: boolean) =>
-      dispatch(actions.auth(email, password, isSignup))
+      dispatch(actions.auth(email, password, isSignup)),
+    onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath('/'))
   };
 };
 

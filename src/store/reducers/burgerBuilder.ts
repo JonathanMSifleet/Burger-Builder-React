@@ -23,6 +23,7 @@ const addIngredient = (
   };
   const updatedIngredients = updateObject(state.ingredients, updatedIngredient);
   const updatedState = {
+    building: true,
     ingredients: updatedIngredients,
     // @ts-expect-error can be used as index
     totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName]
@@ -39,6 +40,7 @@ const removeIngredient = (
   };
   const updatedIngs = updateObject(state.ingredients, updatedIng);
   const updatedSt = {
+    building: true,
     ingredients: updatedIngs,
     // @ts-expect-error can be used as index
     totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName]
@@ -57,8 +59,9 @@ const setIngredients = (
       cheese: action.ingredients.cheese,
       meat: action.ingredients.meat
     },
-    totalPrice: 4,
-    error: false
+    building: false,
+    error: false,
+    totalPrice: 4
   });
 };
 
