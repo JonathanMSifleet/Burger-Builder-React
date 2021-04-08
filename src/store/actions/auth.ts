@@ -33,6 +33,10 @@ export const authFail = (error: string): { type: string; error: string } => {
 };
 
 export const logout = (): { type: string } => {
+  localStorage.removeItem('expirationDate');
+  localStorage.removeItem('token');
+  localStorage.removeItem('userId');
+
   return {
     type: actionTypes.AUTH_LOGOUT
   };
@@ -70,8 +74,15 @@ export const auth = (
         password: password,
         returnSecureToken: true
       });
+      // console.log('Response:', response);
 
-      console.log('Response:', response);
+      const expiryDate = new Date(
+        new Date().getTime() + response.data.expiresIn * 1000
+      ).toString();
+
+      localStorage.setItem('expirationDate', expiryDate);
+      localStorage.setItem('token', response.data.idToken);
+      localStorage.setItem('userId', response.data.localId);
       dispatch(authSuccess(response.data.idToken, response.data.localId));
       dispatch(checkAuthTimeout(response.data.expiresIn));
     } catch (e) {
@@ -86,5 +97,28 @@ export const setAuthRedirectPath = (
   return {
     path,
     type: actionTypes.SET_AUTH_REDIRECT_PATH
+  };
+};
+
+export const authCheckState = () => {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  return (dispatch: any): void => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      dispatch(logout());
+    } else {
+      const expirationDate = Date.parse(
+        // @ts-expect-error false error
+        localStorage.getItem('expirationDate')
+      );
+
+      if (expirationDate <= new Date().getTime()) {
+        dispatch(logout());
+      } else {
+        const userId = localStorage.getItem('expirationDate');
+        dispatch(authSuccess(token, userId!));
+        dispatch(checkAuthTimeout(expirationDate - new Date().getTime()));
+      }
+    }
   };
 };

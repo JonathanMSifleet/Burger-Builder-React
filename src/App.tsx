@@ -1,18 +1,32 @@
-// @ts-ignore
+// @ts-expect-error
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
+import {
+  Route,
+  RouteComponentProps,
+  Switch,
+  withRouter
+} from 'react-router-dom';
 import Auth from './containers/Auth/Auth';
 import Logout from './containers/Auth/Logout/Logout';
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
 import Checkout from './containers/Checkout/Checkout';
 import Orders from './containers/Orders/Orders';
 import Layout from './hoc/Layout/Layout';
+import * as actions from './store/actions/index';
 
-class App extends Component {
+interface IProps extends RouteComponentProps {
+  onTryAutoSignup(): void;
+}
+
+class App extends Component<IProps> {
+  componentDidMount() {
+    this.props.onTryAutoSignup();
+  }
+
   render(): JSX.Element {
     return (
       <div>
-        {/* could use switch instead of exact */}
         <Layout>
           <Switch>
             <Route path="/checkout" component={Checkout} />
@@ -27,4 +41,10 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    onTryAutoSignup: () => dispatch(actions.authCheckState())
+  };
+};
+
+export default withRouter(connect(null, mapDispatchToProps)(App));

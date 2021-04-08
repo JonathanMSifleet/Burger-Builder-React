@@ -1,4 +1,4 @@
-export { auth, logout, setAuthRedirectPath } from './auth';
+export { auth, authCheckState, logout, setAuthRedirectPath } from './auth';
 export {
   addIngredient,
   initIngredients,
