@@ -6,6 +6,7 @@ import Button from '../../../components/UI/Button/Button';
 import Input from '../../../components/UI/Input/Input';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
+import { updateObject } from '../../../shared/utility';
 import * as actions from '../../../store/actions/index';
 import classes from './ContactData.module.css';
 
@@ -152,26 +153,26 @@ class ContactData extends Component<IProps> {
     event: { target: { value: string } },
     inputIdentifier: string
   ): void => {
-    const updatedOrderForm = {
-      ...this.state.orderForm
-    };
-    // required as spread does not deep-copy nested properties
-    const updatedFormElement = {
-      // @ts-ignore
-      ...updatedOrderForm[inputIdentifier]
-    };
-    updatedFormElement.value = event.target.value;
-    updatedFormElement.valid = this.checkValidity(
-      updatedFormElement.value,
-      updatedFormElement.validation
+    const updatedFormElement = updateObject(
+      // @ts-expect-error can be used as key
+      this.state.orderForm[inputIdentifier],
+      {
+        valid: this.checkValidity(
+          event.target.value,
+          // @ts-expect-error can be used as key
+          this.state.orderForm[inputIdentifier].validation
+        ),
+        value: event.target.value,
+        touched: true
+      }
     );
-    updatedFormElement.touched = true;
-    // @ts-ignore
-    updatedOrderForm[inputIdentifier] = updatedFormElement;
+
+    const updatedOrderForm = updateObject(this.state.orderForm, {
+      [inputIdentifier]: updatedFormElement
+    });
 
     let formIsValid = true;
     for (const inputIdentifier in updatedOrderForm) {
-      // @ts-ignore
       formIsValid = updatedOrderForm[inputIdentifier].valid && formIsValid;
     }
 

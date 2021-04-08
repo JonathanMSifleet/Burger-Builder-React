@@ -5,6 +5,7 @@ import { Redirect } from 'react-router';
 import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import { updateObject } from '../../shared/utility';
 import * as actions from '../../store/actions/index';
 import classes from './Auth.module.css';
 
@@ -97,20 +98,18 @@ class Auth extends Component<IProps> {
     event: { target: { value: string } },
     controlName: string
   ): void => {
-    const updatedControls = {
-      ...this.state.controls,
-      [controlName]: {
-        // @ts-expect-error can be used to index
-        ...this.state.controls[controlName],
+    const updatedControls = updateObject(this.state.controls, {
+      // @ts-expect-error can be used as key
+      [controlName]: updateObject(this.state.controls[controlName], {
         value: event.target.value,
         valid: this.checkValidity(
           event.target.value,
-          // @ts-expect-error can be used to index
+          // @ts-expect-error can be used as key
           this.state.controls[controlName].validation
         ),
         touched: true
-      }
-    };
+      })
+    });
     this.setState({ controls: updatedControls });
   };
 

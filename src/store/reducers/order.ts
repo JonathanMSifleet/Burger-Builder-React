@@ -1,6 +1,6 @@
 import { IOrderData } from '../../containers/Checkout/ContactData/ContactData';
 import * as actionTypes from '../actions/actionTypes';
-import { updateObject } from './../utility';
+import { updateObject } from '../../shared/utility';
 
 const initialState = {
   loading: false,
