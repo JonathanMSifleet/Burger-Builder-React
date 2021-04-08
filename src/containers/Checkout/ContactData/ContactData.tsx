@@ -6,7 +6,7 @@ import Button from '../../../components/UI/Button/Button';
 import Input from '../../../components/UI/Input/Input';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
-import { updateObject } from '../../../shared/utility';
+import { checkValidity, updateObject } from '../../../shared/utility';
 import * as actions from '../../../store/actions/index';
 import classes from './ContactData.module.css';
 
@@ -115,40 +115,6 @@ class ContactData extends Component<IProps> {
     formIsValid: false
   };
 
-  checkValidity(
-    value: string,
-    rules: {
-      isEmail: boolean;
-      maxLength: number;
-      minLength: number;
-      required: any;
-    }
-  ): boolean {
-    let isValid = true;
-    if (!rules) {
-      return true;
-    }
-
-    if (rules.required) {
-      isValid = value.trim() !== '' && isValid;
-    }
-
-    if (rules.minLength) {
-      isValid = value.length >= rules.minLength && isValid;
-    }
-
-    if (rules.maxLength) {
-      isValid = value.length <= rules.maxLength && isValid;
-    }
-
-    if (rules.isEmail) {
-      const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-      isValid = pattern.test(value) && isValid;
-    }
-
-    return isValid;
-  }
-
   inputChangedHandler = (
     event: { target: { value: string } },
     inputIdentifier: string
@@ -157,7 +123,7 @@ class ContactData extends Component<IProps> {
       // @ts-expect-error can be used as key
       this.state.orderForm[inputIdentifier],
       {
-        valid: this.checkValidity(
+        valid: checkValidity(
           event.target.value,
           // @ts-expect-error can be used as key
           this.state.orderForm[inputIdentifier].validation

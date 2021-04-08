@@ -5,7 +5,7 @@ import { Redirect } from 'react-router';
 import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
 import Spinner from '../../components/UI/Spinner/Spinner';
-import { updateObject } from '../../shared/utility';
+import { checkValidity, updateObject } from '../../shared/utility';
 import * as actions from '../../store/actions/index';
 import classes from './Auth.module.css';
 
@@ -60,40 +60,6 @@ class Auth extends Component<IProps> {
     }
   }
 
-  checkValidity(
-    value: string,
-    rules: {
-      isEmail: boolean;
-      maxLength: number;
-      minLength: number;
-      required: any;
-    }
-  ): boolean {
-    let isValid = true;
-    if (!rules) {
-      return true;
-    }
-
-    if (rules.required) {
-      isValid = value.trim() !== '' && isValid;
-    }
-
-    if (rules.minLength) {
-      isValid = value.length >= rules.minLength && isValid;
-    }
-
-    if (rules.maxLength) {
-      isValid = value.length <= rules.maxLength && isValid;
-    }
-
-    if (rules.isEmail) {
-      const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-      isValid = pattern.test(value) && isValid;
-    }
-
-    return isValid;
-  }
-
   inputChangedHandler = (
     event: { target: { value: string } },
     controlName: string
@@ -102,7 +68,7 @@ class Auth extends Component<IProps> {
       // @ts-expect-error can be used as key
       [controlName]: updateObject(this.state.controls[controlName], {
         value: event.target.value,
-        valid: this.checkValidity(
+        valid: checkValidity(
           event.target.value,
           // @ts-expect-error can be used as key
           this.state.controls[controlName].validation
@@ -135,7 +101,7 @@ class Auth extends Component<IProps> {
     for (const key in this.state.controls) {
       formElementsArray.push({
         id: key,
-        // @ts-ignore
+        // @ts-expect-error can be used as key
         config: this.state.controls[key]
       });
     }
