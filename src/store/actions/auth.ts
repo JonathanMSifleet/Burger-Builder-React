@@ -74,7 +74,6 @@ export const auth = (
         password: password,
         returnSecureToken: true
       });
-      // console.log('Response:', response);
 
       const expiryDate = JSON.stringify(
         new Date().getTime() + response.data.expiresIn * 1000
