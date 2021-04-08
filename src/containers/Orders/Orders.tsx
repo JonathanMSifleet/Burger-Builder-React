@@ -9,10 +9,9 @@ import * as actions from '../../store/actions/index';
 
 interface IProps {
   loading: boolean;
-  onFetchOrders(token: string, userId: string): void;
+  onFetchOrders(token: string): void;
   orders: any;
   token: string;
-  userId: string;
 }
 
 class Orders extends Component<IProps> {
@@ -22,7 +21,7 @@ class Orders extends Component<IProps> {
   };
 
   componentDidMount() {
-    this.props.onFetchOrders(this.props.token, this.props.userId);
+    this.props.onFetchOrders(this.props.token);
   }
 
   render(): JSX.Element {
@@ -49,20 +48,18 @@ class Orders extends Component<IProps> {
 
 const mapStateToProps = (state: {
   order: { orders: any; loading: boolean };
-  auth: { token: string; userId: string };
+  auth: { token: string };
 }) => {
   return {
     loading: state.order.loading,
     orders: state.order.orders,
-    token: state.auth.token,
-    userId: state.auth.userId
+    token: state.auth.token
   };
 };
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    onFetchOrders: (token: string, userId: string) =>
-      dispatch(actions.fetchOrders(token, userId))
+    onFetchOrders: (token: string) => dispatch(actions.fetchOrders(token))
   };
 };
 

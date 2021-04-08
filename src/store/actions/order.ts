@@ -28,8 +28,7 @@ export const purchaseBurgerStart = (): { type: string } => {
 };
 
 export const purchaseBurger = (orderData: IOrderData, token: string) => {
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  return async (dispatch: any): Promise<void> => {
+  return async (dispatch: (arg0: any) => void): Promise<void> => {
     dispatch(purchaseBurgerStart());
     try {
       const response = await axios.post(`orders.json?auth=${token}`, orderData);
@@ -68,15 +67,13 @@ export const fetchOrdersStart = (): { type: string } => {
   };
 };
 
-export const fetchOrders = (token: string, userId: string) => {
+export const fetchOrders = (token: string) => {
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   return async (dispatch: any): Promise<void> => {
     dispatch(fetchOrdersStart());
 
-    const queryParams = `auth=${token}&orderBy="userId"&equalTo"=${userId}"`;
-
     try {
-      const response = await axios.get(`/orders.json?${queryParams}`);
+      const response = await axios.get(`/orders.json?auth=${token}`);
 
       const fetchedOrders = [];
       for (const key in response.data) {
