@@ -16,6 +16,7 @@ interface IProps {
   onOrderBurger(order: any, token: string): void;
   price: number;
   token: string;
+  userId: string;
 }
 
 export interface IOrderData {
@@ -194,7 +195,8 @@ class ContactData extends Component<IProps> {
     const order = {
       ingredients: this.props.ingredients,
       orderData: formData,
-      price: this.props.price
+      price: this.props.price,
+      userId: this.props.userId
     };
 
     this.props.onOrderBurger(order, this.props.token);
@@ -250,13 +252,14 @@ const mapStateToProps = (state: {
     totalPrice: number;
   };
   order: { loading: boolean };
-  auth: { token: string };
+  auth: { token: string; userId: string };
 }) => {
   return {
     ingredients: state.burgerBuilder.ingredients,
     loading: state.order.loading,
     price: state.burgerBuilder.totalPrice,
-    token: state.auth.token
+    token: state.auth.token,
+    userId: state.auth.userId
   };
 };
 
