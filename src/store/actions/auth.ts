@@ -76,9 +76,9 @@ export const auth = (
       });
       // console.log('Response:', response);
 
-      const expiryDate = new Date(
+      const expiryDate = JSON.stringify(
         new Date().getTime() + response.data.expiresIn * 1000
-      ).toString();
+      );
 
       localStorage.setItem('expirationDate', expiryDate);
       localStorage.setItem('token', response.data.idToken);
@@ -107,17 +107,21 @@ export const authCheckState = () => {
     if (!token) {
       dispatch(logout());
     } else {
-      const expirationDate = Date.parse(
+      const expirationDate = JSON.parse(
         // @ts-expect-error false error
         localStorage.getItem('expirationDate')
       );
 
-      if (expirationDate <= new Date().getTime()) {
+      const currentDate = new Date().getTime();
+
+      if (expirationDate <= currentDate) {
         dispatch(logout());
       } else {
         const userId = localStorage.getItem('expirationDate') as string;
         dispatch(authSuccess(token, userId));
-        dispatch(checkAuthTimeout(expirationDate - new Date().getTime()));
+        dispatch(
+          checkAuthTimeout((expirationDate - new Date().getTime()) / 1000)
+        );
       }
     }
   };
