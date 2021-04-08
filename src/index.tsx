@@ -13,8 +13,9 @@ import burgerBuilderReducer from './store/reducers/burgerBuilder';
 import orderReducer from './store/reducers/order';
 
 const composeEnhancers =
-  // @ts-expect-error type any required
-  (window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] as typeof compose) || compose;
+  (process.env.NODE_ENV === 'development' &&
+    (window as any)?.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ||
+  compose;
 
 const rootReducer = combineReducers({
   auth: authReducer,
