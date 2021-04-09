@@ -1,5 +1,4 @@
-// @ts-ignore
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route } from 'react-router-dom';
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
@@ -15,41 +14,34 @@ interface IProps {
   purchased: boolean;
 }
 
-class Checkout extends Component<IProps> {
-  checkoutCancelledHandler = (): void => {
-    this.props.history.goBack();
+const checkout: React.FC<IProps> = ({ history, ings, purchased, match }) => {
+  const checkoutCancelledHandler = (): void => {
+    history.goBack();
   };
 
-  checkoutContinuedHandler = (): void => {
-    this.props.history.replace('/checkout/contact-data');
+  const checkoutContinuedHandler = (): void => {
+    history.replace('/checkout/contact-data');
   };
 
-  render(): JSX.Element {
-    let summary = <Redirect to="/" />;
+  let summary = <Redirect to="/" />;
 
-    if (this.props.ings) {
-      const purchasedRedirect = this.props.purchased ? (
-        <Redirect to="/" />
-      ) : null;
-      summary = (
-        <div>
-          {purchasedRedirect}
-          <CheckoutSummary
-            ingredients={this.props.ings}
-            onCheckoutCancelled={this.checkoutCancelledHandler}
-            onCheckoutContinued={this.checkoutContinuedHandler}
-          />
-          <Route
-            path={this.props.match.url + '/contact-data'}
-            component={ContactData}
-          />
-        </div>
-      );
-    }
-
-    return summary;
+  if (ings) {
+    const purchasedRedirect = purchased ? <Redirect to="/" /> : null;
+    summary = (
+      <div>
+        {purchasedRedirect}
+        <CheckoutSummary
+          ingredients={ings}
+          onCheckoutCancelled={checkoutCancelledHandler}
+          onCheckoutContinued={checkoutContinuedHandler}
+        />
+        <Route path={match.url + '/contact-data'} component={ContactData} />
+      </div>
+    );
   }
-}
+
+  return summary;
+};
 
 const mapStateToProps = (state: {
   burgerBuilder: {
@@ -64,4 +56,4 @@ const mapStateToProps = (state: {
   };
 };
 
-export default connect(mapStateToProps)(Checkout);
+export default connect(mapStateToProps)(checkout);

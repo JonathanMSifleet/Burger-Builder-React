@@ -35,8 +35,8 @@ const app = ({ isAuthenticated, onTryAutoSignup }: IProps) => {
 
   let routes = (
     <Switch>
-      <Route path="/auth" render={() => <Auth />} />
-      <Route path="/" exact component={() => <BurgerBuilder />} />
+      <Route path="/auth" render={(props: any) => <Auth {...props} />} />
+      <Route path="/" exact component={BurgerBuilder} />
       <Redirect to="/" />
     </Switch>
   );
@@ -44,12 +44,17 @@ const app = ({ isAuthenticated, onTryAutoSignup }: IProps) => {
   if (isAuthenticated) {
     routes = (
       <Switch>
-        {/* @ts-ignore */}
-        <Route path="/checkout" component={() => <Checkout />} />
-        <Route path="/orders" component={() => <Orders />} />
-        <Route path="/logout" component={() => <Logout />} />
-        <Route path="/auth" component={() => <Auth />} />
-        <Route path="/" exact component={() => <BurgerBuilder />} />
+        <Route
+          path="/checkout"
+          component={(props: any) => <Checkout {...props} />}
+        />
+        <Route
+          path="/orders"
+          component={(props: any) => <Orders {...props} />}
+        />
+        <Route path="/logout" component={Logout} />
+        <Route path="/auth" component={(props: any) => <Auth {...props} />} />
+        <Route path="/" exact component={BurgerBuilder} />
         <Redirect to="/" />
       </Switch>
     );

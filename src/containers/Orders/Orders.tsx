@@ -1,5 +1,5 @@
 // @ts-ignore
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import axios from '../../axios-orders';
 import Order from '../../components/Order/Order';
@@ -15,37 +15,36 @@ interface IProps {
   userId: string;
 }
 
-class Orders extends Component<IProps> {
-  state = {
-    loading: false,
-    orders: []
-  };
+const orders: React.FC<IProps> = ({
+  token,
+  userId,
+  loading,
+  orders,
+  onFetchOrders
+}) => {
+  useEffect(() => {
+    onFetchOrders(token, userId);
+  }, []);
 
-  componentDidMount() {
-    this.props.onFetchOrders(this.props.token, this.props.userId);
+  let ordersToDisplay = <Spinner />;
+  if (!loading) {
+    ordersToDisplay = orders.map(
+      (order: {
+        id: string;
+        key: string;
+        ingredients: { [type: string]: number };
+        price: number;
+      }) => (
+        <Order
+          key={order.id}
+          ingredients={order.ingredients}
+          price={+order.price}
+        />
+      )
+    );
   }
-
-  render(): JSX.Element {
-    let orders = <Spinner />;
-    if (!this.props.loading) {
-      orders = this.props.orders.map(
-        (order: {
-          id: string;
-          key: string;
-          ingredients: { [type: string]: number };
-          price: number;
-        }) => (
-          <Order
-            key={order.id}
-            ingredients={order.ingredients}
-            price={+order.price}
-          />
-        )
-      );
-    }
-    return <div>{orders}</div>;
-  }
-}
+  return <div>{ordersToDisplay}</div>;
+};
 
 const mapStateToProps = (state: {
   order: { orders: any; loading: boolean };
@@ -69,4 +68,4 @@ const mapDispatchToProps = (dispatch: any) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withErrorHandler(Orders, axios));
+)(withErrorHandler(orders, axios));
