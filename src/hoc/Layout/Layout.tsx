@@ -1,5 +1,5 @@
-// @ts-ignore false-error
-import React, { Component } from 'react';
+// @ts-expect-error react required
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import SideDrawer from '../../components/Navigation/SideDrawer/SideDrawer';
 import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
@@ -11,39 +11,32 @@ interface IProps {
   isAuthenticated: boolean;
 }
 
-class Layout extends Component<IProps> {
-  state = {
-    showSideDrawer: false
+const layout = ({ children, isAuthenticated }: IProps) => {
+  const [sideDrawerIsVisible, setSideDrawerIsVisible] = useState(false);
+
+  const sideDrawerClosedHandler = (): void => {
+    setSideDrawerIsVisible(false);
   };
 
-  sideDrawerClosedHandler = (): void => {
-    this.setState({ showSideDrawer: false });
+  const sideDrawerToggleHandler = (): void => {
+    setSideDrawerIsVisible(!sideDrawerIsVisible);
   };
 
-  sideDrawerToggleHandler = (): void => {
-    // inverting current state not recommended due to async
-    this.setState((prevState: { showSideDrawer: boolean }) => {
-      return { showSideDrawer: !prevState.showSideDrawer };
-    });
-  };
-
-  render(): JSX.Element {
-    return (
-      <Auxiliary>
-        <Toolbar
-          drawerToggleClicked={this.sideDrawerToggleHandler}
-          isAuth={this.props.isAuthenticated}
-        />
-        <SideDrawer
-          closed={this.sideDrawerClosedHandler}
-          isAuth={this.props.isAuthenticated}
-          open={this.state.showSideDrawer}
-        />
-        <main className={classes.Content}>{this.props.children}</main>
-      </Auxiliary>
-    );
-  }
-}
+  return (
+    <Auxiliary>
+      <Toolbar
+        drawerToggleClicked={sideDrawerToggleHandler}
+        isAuth={isAuthenticated}
+      />
+      <SideDrawer
+        closed={sideDrawerClosedHandler}
+        isAuth={isAuthenticated}
+        open={sideDrawerIsVisible}
+      />
+      <main className={classes.Content}>{children}</main>
+    </Auxiliary>
+  );
+};
 
 const mapStateToProps = (state: any) => {
   return {
@@ -51,4 +44,4 @@ const mapStateToProps = (state: any) => {
   };
 };
 
-export default connect(mapStateToProps)(Layout);
+export default connect(mapStateToProps)(layout);
