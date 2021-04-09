@@ -2,6 +2,6 @@ interface IProps {
   children: any;
 }
 
-const auxiliary = (props: IProps): any => props.children;
+const auxiliary = ({ children }: IProps): any => children;
 
 export default auxiliary;
