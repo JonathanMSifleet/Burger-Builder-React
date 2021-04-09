@@ -43,8 +43,7 @@ export const logout = (): { type: string } => {
 };
 
 export const checkAuthTimeout = (expirationTime: number) => {
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  return (dispatch: any): void => {
+  return (dispatch: (arg0: { type: string }) => void): void => {
     setTimeout(() => {
       dispatch(logout());
     }, expirationTime * 1000);
@@ -55,8 +54,8 @@ export const auth = (
   email: string,
   password: string,
   isSignup: boolean
-): any => {
-  return async (dispatch: any) => {
+): ((dispatch: any) => Promise<void>) => {
+  return async (dispatch) => {
     dispatch(authStart());
 
     const apiKey = 'AIzaSyDvjZNwI1H5NsUPGNLRlt4bCameEpvcqVE';
