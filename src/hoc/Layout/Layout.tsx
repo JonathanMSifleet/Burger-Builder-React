@@ -1,4 +1,3 @@
-// @ts-expect-error react required
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import SideDrawer from '../../components/Navigation/SideDrawer/SideDrawer';
@@ -11,7 +10,7 @@ interface IProps {
   isAuthenticated: boolean;
 }
 
-const layout = ({ children, isAuthenticated }: IProps) => {
+const layout: React.FC<IProps> = ({ children, isAuthenticated }) => {
   const [sideDrawerIsVisible, setSideDrawerIsVisible] = useState(false);
 
   const sideDrawerClosedHandler = (): void => {

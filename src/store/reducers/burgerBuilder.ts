@@ -1,5 +1,5 @@
-import * as actionTypes from '../actions/actionTypes';
 import { updateObject } from '../../shared/utility';
+import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
   ingredients: null,
@@ -15,7 +15,7 @@ const INGREDIENT_PRICES = {
 };
 
 const addIngredient = (
-  state: { ingredients: any; totalPrice: any; error?: boolean },
+  state: { ingredients: any; totalPrice: number; error?: boolean },
   action: { type?: string; ingredientName: any; ingredients?: any }
 ) => {
   const updatedIngredient = {
@@ -32,8 +32,8 @@ const addIngredient = (
 };
 
 const removeIngredient = (
-  state: { ingredients: any; totalPrice: any; error?: boolean },
-  action: { type?: string; ingredientName: any; ingredients?: any }
+  state: { ingredients: any; totalPrice: number; error?: boolean },
+  action: { type?: string; ingredientName: string; ingredients?: any }
 ) => {
   const updatedIng = {
     [action.ingredientName]: state.ingredients[action.ingredientName] - 1
